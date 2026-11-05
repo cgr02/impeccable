@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FaceCut AI · Entrega 2</title>
+<meta name="description" content="FaceCut AI: comparación de MTCNN + FaceNet, VGG16 e InceptionV3 para clasificar la forma del rostro masculino. Inteligencia Artificial 2, Universidad Industrial de Santander.">
+<style>
+@font-face{font-family:"Inter";src:url("assets/fonts/inter-latin-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";src:url("assets/fonts/inter-latin-ext-wght-normal.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+  --navy:#0B1428; --navy-2:#15213B; --navy-3:#22304F;
+  --ground:#E9EDF3; --panel:#FFFFFF; --panel-2:#F5F7FA;
+  --ink:#0F172A; --ink-2:#334155; --muted:#56657C; --line:#D5DCE6;
+  --blue:#2563EB; --blue-2:#3B82F6; --blue-soft:#E1EAFD; --blue-ink:#1D4ED8;
+  --slate-bar:#64748B; --slate-bar-2:#C9D2DE;
+  --amber-ink:#92400E; --amber-soft:#FEF3C7; --amber-line:#F3C969;
+  --on-navy:#F1F5FB; --on-navy-2:#A9B6CC;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--navy);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-feature-settings:"cv11","ss01";-webkit-font-smoothing:antialiased;overflow:hidden}
+::selection{background:var(--blue);color:#fff}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue-2);outline-offset:4px;border-radius:6px}
+button{font:inherit;color:inherit}
+
+/* Stage: a fixed 1920x1080 canvas scaled to the window, so the projector shows exactly what was designed */
+.viewport{position:fixed;inset:0;display:grid;place-items:center}
+.stage{position:relative;width:1920px;height:1080px;flex:none;transform:scale(var(--scale,1));transform-origin:center;background:var(--ground);overflow:hidden;box-shadow:0 30px 80px rgb(0 0 0 / .35)}
+
+.slide{position:absolute;inset:0;padding:136px 96px 128px;display:flex;flex-direction:column;visibility:hidden;opacity:0}
+.slide.is-active{visibility:visible;opacity:1}
+.slide.dark{background:var(--navy);color:var(--on-navy)}
+
+/* Running head and progress rail (global chrome) */
+.chrome-head{position:absolute;z-index:5;top:0;left:0;right:0;height:96px;padding:0 96px;display:flex;align-items:center;justify-content:space-between;font-size:20px;color:var(--muted);transition:color .4s,opacity .4s}
+.brand{display:flex;align-items:center;gap:14px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.brand b{color:var(--blue)}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.where{display:flex;align-items:center;gap:18px}
+.where .sec{font-weight:600;color:var(--ink-2)}
+.where .budget{font-variant-numeric:tabular-nums;padding:6px 14px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.is-cover .chrome-head{opacity:0;pointer-events:none}
+
+.chrome-foot{position:absolute;z-index:5;left:96px;right:96px;bottom:36px;display:flex;align-items:flex-end;gap:28px}
+.rail{flex:1;display:flex;gap:6px}
+.rail .seg{position:relative;flex:var(--w) 1 0;min-width:0;padding-top:14px;font-size:16px;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:none;border:0;text-align:left;cursor:pointer}
+.rail .seg::before,.rail .seg::after{content:"";position:absolute;left:0;top:0;height:5px;border-radius:3px}
+.rail .seg::before{right:0;background:var(--line)}
+.rail .seg::after{width:var(--fill,0%);background:var(--blue);transition:width .7s var(--ease-out)}
+.rail .seg.on{color:var(--ink);font-weight:650}
+.count{font-size:18px;font-variant-numeric:tabular-nums;color:var(--muted);display:flex;align-items:center;gap:10px}
+.nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;cursor:pointer;transition:background .2s,border-color .2s}
+.nav-btn:hover{background:var(--blue-soft);border-color:var(--blue-2)}
+.nav-btn:disabled{opacity:.35;cursor:default;background:var(--panel)}
+.nav-btn svg{width:20px;height:20px}
+.is-cover .chrome-foot .seg{color:var(--on-navy-2)}
+.is-cover .chrome-foot .seg::before{background:var(--navy-3)}
+.is-cover .count{color:var(--on-navy-2)}
+.is-cover .nav-btn{background:var(--navy-2);border-color:var(--navy-3);color:var(--on-navy)}
+
+/* Type */
+h1,h2,h3,p{margin:0}
+.title{font-size:64px;line-height:1.04;font-weight:760;letter-spacing:-.03em;text-wrap:balance;max-width:28ch}
+.lead{margin-top:18px;font-size:28px;line-height:1.4;color:var(--ink-2);max-width:62ch;text-wrap:pretty}
+.lead strong{color:var(--ink);font-weight:680}
+h3{font-size:30px;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.body{font-size:26px;line-height:1.42;color:var(--ink-2);text-wrap:pretty}
+.small{font-size:21px;line-height:1.4;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+.head{margin-bottom:40px}
+.fill{flex:1;min-height:0}
+
+/* Panels */
+.panel{background:var(--panel);border-radius:var(--r);box-shadow:0 1px 2px rgb(15 23 42 / .06),0 8px 24px -12px rgb(15 23 42 / .14)}
+
+/* Figures from the original decks */
+figure{margin:0;display:flex;flex-direction:column;min-height:0}
+.zoom{display:block;padding:0;border:0;background:var(--panel);border-radius:var(--r);overflow:hidden;cursor:zoom-in;box-shadow:0 1px 2px rgb(15 23 42 / .06),0 10px 30px -14px rgb(15 23 42 / .22);transition:box-shadow .3s var(--ease-out),transform .3s var(--ease-out)}
+.zoom:hover{box-shadow:0 1px 2px rgb(15 23 42 / .08),0 18px 40px -16px rgb(15 23 42 / .32)}
+.zoom img{display:block;width:100%;height:auto}
+figcaption{margin-top:12px;font-size:18px;color:var(--muted);display:flex;gap:10px;align-items:center}
+figcaption .tag{font-weight:650;color:var(--ink-2)}
+
+/* Fact list beside a pipeline */
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:26px}
+.facts li{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start}
+.facts .k{width:44px;height:44px;border-radius:12px;background:var(--blue-soft);color:var(--blue-ink);display:grid;place-items:center;font-weight:750;font-size:20px;font-variant-numeric:tabular-nums}
+.facts b{display:block;font-size:25px;color:var(--ink);font-weight:680;margin-bottom:4px;letter-spacing:-.01em}
+.facts span{font-size:22px;line-height:1.4;color:var(--ink-2)}
+
+.note{display:flex;gap:16px;align-items:flex-start;padding:20px 24px;border-radius:14px;background:var(--amber-soft);border:1px solid var(--amber-line);color:var(--amber-ink);font-size:21px;line-height:1.42}
+.note svg{flex:none;width:28px;height:28px;margin-top:1px}
+.note strong{font-weight:700}
+.ref{padding:20px 24px;border-radius:14px;background:var(--blue-soft);color:var(--blue-ink);font-size:21px;line-height:1.42}
+.ref strong{font-weight:700}
+
+/* Tables */
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:top}
+.t{font-size:21px;line-height:1.35}
+.t thead th{font-size:17px;font-weight:650;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 18px 12px;border-bottom:2px solid var(--ink)}
+.t tbody th{font-weight:650;color:var(--ink);padding:12px 18px;white-space:nowrap}
+.t tbody td{padding:12px 18px;color:var(--ink-2)}
+.t tbody tr+tr th,.t tbody tr+tr td{border-top:1px solid var(--line)}
+.t .r{text-align:right}
+.t .gap th,.t .gap td{border-top:2px solid var(--line)}
+.t .hi{background:var(--blue-soft)}
+.t .hi th,.t .hi td{color:var(--blue-ink)}
+.t .hi th{font-weight:760}
+.t .na{color:var(--muted);font-style:italic}
+
+/* ---------- Slide 1: cover ---------- */
+.cover{padding:84px 96px 128px}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start}
+.course{display:flex;align-items:center;gap:14px;font-size:24px;font-weight:600;color:var(--on-navy-2)}
+.course .mark{width:40px;height:40px;border-radius:11px;background:var(--blue);display:grid;place-items:center;color:#fff}
+.course .mark svg{width:24px;height:24px}
+.uis{height:76px;width:auto;border-radius:6px}
+.cover h1{margin-top:44px;font-size:132px;line-height:.92;font-weight:800;letter-spacing:-.04em}
+.cover h1 b{color:var(--blue-2);font-weight:800}
+.cover .sub{margin-top:28px;font-size:30px;line-height:1.35;color:var(--on-navy-2);max-width:640px}
+.cover .sub strong{color:var(--on-navy);font-weight:650}
+.cover-art{position:absolute;right:96px;top:208px;width:1000px;border-radius:22px;overflow:hidden;box-shadow:0 40px 90px -30px rgb(0 0 0 / .7)}
+.cover-art img{display:block;width:100%}
+.team{position:absolute;left:96px;right:96px;bottom:136px;display:flex;justify-content:space-between;align-items:flex-end;padding:28px 36px;border-radius:18px;background:var(--navy-2);border:1px solid var(--navy-3)}
+.team .lbl{font-size:18px;color:var(--on-navy-2);margin-bottom:8px}
+.team .names{font-size:30px;font-weight:650;letter-spacing:-.01em}
+.team .names i{font-style:normal;color:var(--blue-2);padding:0 14px}
+.team .ent{font-size:22px;color:var(--on-navy-2);text-align:right}
+.team .ent b{display:block;color:var(--on-navy);font-size:28px;font-weight:700}
+
+/* ---------- Slide 2: intro ---------- */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr 360px;gap:28px;flex:1;min-height:0}
+.ps{padding:40px 40px 36px;display:flex;flex-direction:column;gap:20px}
+.ps .ttl{display:flex;align-items:center;gap:16px}
+.ps .ttl svg{flex:none;width:34px;height:34px}
+.ps.problem .ttl svg{color:#B42318}
+.ps.solution .ttl svg{color:var(--blue-ink)}
+.ps .body{font-size:31px}
+.ps h3{font-size:36px}
+.ps .out{margin-top:auto;font-size:25px!important;padding-top:22px;border-top:1px solid var(--line);font-size:23px;line-height:1.42;color:var(--ink-2)}
+.ps .out b{color:var(--ink)}
+.intro-photo{border-radius:var(--r);overflow:hidden}
+.intro-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.shapes{margin-top:28px;display:flex;align-items:center;gap:40px;padding:26px 40px}
+.shapes .lbl{font-size:24px;font-weight:700;margin-right:8px}
+.shape{display:flex;align-items:center;gap:14px;font-size:24px;color:var(--ink-2);font-weight:550}
+.shape svg{width:40px;height:48px;color:var(--blue)}
+
+/* ---------- Slide 3: objective ---------- */
+.obj-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:28px;flex:1;min-height:0}
+.obj{padding:48px;display:flex;flex-direction:column;background:var(--navy);color:var(--on-navy)}
+.obj .k{font-size:20px;font-weight:650;color:var(--blue-2);margin-bottom:22px}
+.obj p{font-size:42px;line-height:1.3;font-weight:560;letter-spacing:-.015em;text-wrap:pretty}
+.obj p b{color:#fff;font-weight:720}
+.obj .methods{margin-top:auto;display:flex;flex-wrap:wrap;gap:12px}
+.obj .methods span{padding:10px 18px;border-radius:999px;background:var(--navy-2);border:1px solid var(--navy-3);font-size:21px;font-weight:600}
+.scope{padding:44px 48px;display:flex;flex-direction:column}
+.scope .k{font-size:20px;font-weight:650;color:var(--blue-ink);margin-bottom:10px}
+.scope ol{list-style:none;margin:0;padding:0;counter-reset:s}
+.scope li{counter-increment:s;display:grid;grid-template-columns:64px 1fr;gap:6px;padding:24px 0;border-bottom:1px solid var(--line)}
+.scope li:last-child{border-bottom:0}
+.scope li::before{content:counter(s);font-size:40px;font-weight:780;color:var(--blue);line-height:1;font-variant-numeric:tabular-nums}
+.scope li b{display:block;font-size:27px;font-weight:700;margin-bottom:6px}
+.scope li span{font-size:22px;line-height:1.4;color:var(--ink-2)}
+.key{margin-top:24px;font-size:23px;color:var(--ink-2)}
+.key b{color:var(--ink)}
+
+/* ---------- Method slides ---------- */
+.method{display:grid;grid-template-columns:minmax(0,1fr) 470px;gap:56px;flex:1;min-height:0;align-items:center}
+.method figure{align-items:flex-start}
+.method figure .zoom img{width:auto;max-width:100%;max-height:var(--mh,640px)}
+.method .side{display:flex;flex-direction:column;gap:30px}
+.mhead{display:flex;align-items:baseline;gap:24px}
+.mhead .of{font-size:24px;font-weight:650;color:var(--blue-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ---------- Config slides ---------- */
+.cfg-a{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;flex:1;min-height:0;align-items:start}
+.split{padding:36px 36px 30px}
+.split h3{margin-bottom:22px}
+.cfg-b{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:36px;flex:1;min-height:0}
+.hyper{padding:26px 30px}
+.hyper .t{font-size:19.5px}
+.hyper .t tbody th,.hyper .t tbody td{padding:10px 16px}
+.hyper .t thead th{padding:0 16px 10px}
+.hyper .t thead th:first-child{width:220px}
+.hyper .t thead th span{display:block;font-size:22px;text-transform:none;letter-spacing:-.01em;color:var(--ink);font-weight:720}
+.avatar{display:flex;flex-direction:column;gap:12px}
+.avatar .zoom{width:230px}
+.cfg-c{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;flex:1;min-height:0;align-items:start}
+.col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.col h3{display:flex;align-items:baseline;gap:14px}
+.cfg-c .short .zoom img{width:auto;max-width:100%;max-height:230px;margin:0 auto}
+.cfg-c .short .zoom{width:fit-content}
+.col h3 small{font-size:20px;font-weight:550;color:var(--muted)}
+
+/* ---------- Results ---------- */
+.res-a{display:grid;grid-template-columns:760px minmax(0,1fr);grid-template-rows:auto auto;gap:26px 48px;flex:1;min-height:0;align-content:start}
+.report{padding:24px 30px}
+.report .t{font-size:20px}
+.report .t tbody th,.report .t tbody td{padding:5px 14px}
+.report .t thead th{padding:0 14px 9px}
+.takeaways{list-style:none;margin:0;padding:6px 0 0;display:flex;flex-direction:column;gap:22px}
+.takeaways li{font-size:24px;line-height:1.42;color:var(--ink-2);padding-left:30px;position:relative;text-wrap:pretty}
+.takeaways li::before{content:"";position:absolute;left:0;top:.55em;width:12px;height:12px;border-radius:3px;background:var(--blue)}
+.takeaways b{color:var(--ink);font-weight:700}
+.res-a .wide{grid-column:1 / -1;align-items:center}
+.res-a .wide .zoom img{width:auto;max-width:100%;max-height:330px}
+.pair{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);gap:32px;flex:1;min-height:0;align-items:center}
+.res-c{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);gap:22px 32px;flex:1;min-height:0;align-content:start}
+.res-c .wide{grid-column:1 / -1}
+
+/* ---------- Comparison ---------- */
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;flex:1;min-height:0}
+.chart{padding:36px 40px 30px;display:flex;flex-direction:column}
+.chart h3{font-size:26px;margin-bottom:6px}
+.legend{display:flex;gap:28px;font-size:19px;color:var(--muted);margin-bottom:26px}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:4px;margin-right:8px;vertical-align:-2px}
+.bars{display:flex;flex-direction:column;gap:34px;flex:1;justify-content:center}
+.brow .name{font-size:24px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline}
+.brow .name small{font-size:18px;font-weight:550;color:var(--muted)}
+.bar{position:relative;height:40px;border-radius:8px;background:var(--panel-2);overflow:hidden}
+.bar+.bar{margin-top:8px;height:26px}
+.bar .v{position:absolute;inset:0 auto 0 0;width:calc(var(--v) * 1%);border-radius:8px;background:var(--slate-bar);display:flex;align-items:center;justify-content:flex-end;padding-right:14px;color:#fff;font-weight:760;font-size:21px;font-variant-numeric:tabular-nums;transform-origin:left center}
+.bar+.bar .v{background:var(--slate-bar-2);color:var(--ink);font-size:17px;font-weight:700}
+.bar .na{position:absolute;inset:0;display:flex;align-items:center;padding-left:14px;font-size:17px;color:var(--muted);font-style:italic}
+.brow.best .bar .v{background:var(--blue)}
+.brow.best .bar+.bar .v{background:#9DBBF8;color:var(--ink)}
+.brow.best .name{color:var(--blue-ink)}
+.axis{display:flex;justify-content:space-between;margin-top:14px;font-size:16px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cmp .right{display:flex;flex-direction:column;gap:22px;min-width:0}
+.cmpt{padding:24px 28px}
+.cmpt .t{font-size:20.5px}
+.cmpt .t tbody th,.cmpt .t tbody td{padding:11px 12px}
+.cmpt .t thead th{padding:0 12px 10px;font-size:15px}
+.verdict{display:flex;gap:20px;align-items:center;padding:24px 28px;border-radius:var(--r);background:var(--navy);color:var(--on-navy)}
+.verdict .badge{flex:none;width:58px;height:58px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.verdict .badge svg{width:30px;height:30px;color:#fff}
+.verdict p{font-size:23px;line-height:1.4;color:var(--on-navy-2)}
+.verdict p b{color:#fff;font-weight:700}
+
+/* ---------- Conclusions ---------- */
+.concl{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;flex:1;min-height:0}
+.pick{grid-column:1 / -1;display:flex;align-items:center;gap:36px;padding:30px 40px;background:var(--navy);color:var(--on-navy)}
+.pick .lbl{font-size:20px;color:var(--on-navy-2);margin-bottom:6px}
+.pick .m{font-size:44px;font-weight:780;letter-spacing:-.025em}
+.pick .m b{color:var(--blue-2)}
+.pick .why{margin-left:auto;max-width:31ch;font-size:23px;line-height:1.4;color:var(--on-navy-2)}
+.pick .why b{color:#fff}
+.lst{padding:34px 40px}
+.lst h3{margin-bottom:20px}
+.lst ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+.lst li{display:grid;grid-template-columns:30px 1fr;gap:14px;font-size:22.5px;line-height:1.42;color:var(--ink-2)}
+.lst li svg{width:26px;height:26px;margin-top:2px;color:var(--blue)}
+.lst li b{color:var(--ink);font-weight:680}
+.lst.todo li svg{color:#C2850C}
+
+/* ---------- Notebooks ---------- */
+.nb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;flex:1;min-height:0;align-content:center}
+.nbc{position:relative;padding:40px 40px 36px;display:flex;flex-direction:column;text-decoration:none;transition:transform .35s var(--ease-out),box-shadow .35s var(--ease-out)}
+.nbc:hover{transform:translateY(-6px);box-shadow:0 1px 2px rgb(15 23 42 / .08),0 26px 50px -22px rgb(15 23 42 / .35)}
+.nbc .ord{font-size:20px;font-weight:650;color:var(--blue-ink);font-variant-numeric:tabular-nums}
+.nbc h3{margin-top:10px;font-size:38px;letter-spacing:-.025em}
+.nbc .host{margin-top:8px;font-size:21px;color:var(--muted)}
+.nbc .qr{margin:34px 0 30px;width:220px;height:220px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.nbc .qr img{width:100%;height:100%;display:block}
+.nbc .url{font-size:17px;line-height:1.4;color:var(--muted);word-break:break-all}
+.nbc .go{margin-top:auto;padding-top:26px;display:flex;align-items:center;gap:12px;font-size:23px;font-weight:700;color:var(--blue-ink)}
+.nbc .go svg{width:24px;height:24px;transition:transform .3s var(--ease-out)}
+.nbc:hover .go svg{transform:translate(4px,-4px)}
+.nbc.best{outline:2px solid var(--blue);outline-offset:-2px}
+.nbc .chosen{position:absolute;top:36px;right:36px;padding:7px 14px;border-radius:999px;background:var(--blue);color:#fff;font-size:17px;font-weight:700}
+
+/* ---------- Lightbox ---------- */
+.lightbox{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:3vmin;background:rgb(8 13 26 / .9);cursor:zoom-out}
+.lightbox.open{display:grid;animation:lb-in .35s var(--ease-out)}
+.lightbox img{max-width:100%;max-height:100%;border-radius:12px;background:#fff;box-shadow:0 30px 90px rgb(0 0 0 / .5)}
+.lightbox .hint{position:fixed;bottom:2.4vmin;left:50%;transform:translateX(-50%);color:#C9D3E3;font-size:14px}
+@keyframes lb-in{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1}}
+
+/* ---------- Presenter timer ---------- */
+.timer{position:fixed;z-index:40;top:14px;right:14px;display:none;gap:10px;align-items:center;padding:8px 14px;border-radius:999px;background:var(--navy-2);color:var(--on-navy);font:600 14px/1 "Inter",sans-serif;font-variant-numeric:tabular-nums;border:1px solid var(--navy-3)}
+.timer.on{display:flex}
+.timer .b{color:var(--on-navy-2)}
+.timer.over{background:#7A3E06;border-color:#B45309}
+
+/* ---------- Motion ---------- */
+/* Content is visible by default; motion only runs once the script marks the page ready. */
+.ready .slide{transition:opacity .5s var(--ease-out),visibility 0s linear .5s}
+.ready .slide.is-active{transition:opacity .45s var(--ease-out),visibility 0s}
+.ready .slide [data-r]{opacity:0;transform:translateY(26px);filter:blur(8px)}
+.ready .slide.is-active [data-r]{opacity:1;transform:none;filter:blur(0);transition:opacity .8s var(--ease-out),transform .9s var(--ease-out),filter .8s var(--ease-out);transition-delay:calc(var(--i,0) * 75ms + 120ms)}
+.ready .slide [data-wipe]{clip-path:inset(0 0 100% 0 round 18px)}
+.ready .slide.is-active [data-wipe]{clip-path:inset(0 0 0 0 round 18px);transition:clip-path 1.1s var(--ease-out);transition-delay:calc(var(--i,0) * 75ms + 200ms)}
+.ready .slide .bar .v{transform:scaleX(0)}
+.ready .slide.is-active .bar .v{transform:scaleX(1);transition:transform 1.3s var(--ease-out);transition-delay:calc(var(--d,0) * 120ms + 500ms)}
+.ready .cover-art{transform:scale(1.06);opacity:0}
+.ready .is-active .cover-art{transform:none;opacity:1;transition:transform 2s var(--ease-out),opacity 1.2s var(--ease-out)}
+
+@media (prefers-reduced-motion:reduce){
+  .ready .slide [data-r],.ready .slide [data-wipe],.ready .slide .bar .v,.ready .cover-art{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important;transition:none!important}
+  .ready .slide{transition:none}
+}
+
+/* ---------- Print / PDF: one slide per page ---------- */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  body{overflow:visible;background:#fff}
+  .viewport{position:static;display:block}
+  .stage{transform:none!important;box-shadow:none;width:auto;height:auto;overflow:visible;background:none}
+  .slide{position:relative;width:1920px;height:1080px;visibility:visible!important;opacity:1!important;break-after:page;background:var(--ground)}
+  .slide.dark{background:var(--navy)}
+  .slide [data-r],.slide [data-wipe],.bar .v,.cover-art{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
+  .chrome-head,.chrome-foot,.timer,.lightbox{display:none!important}
+  .slide .print-head{display:flex!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.print-head{display:none;position:absolute;top:0;left:96px;right:96px;height:96px;align-items:center;justify-content:space-between;font-size:20px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L2.4 17.6A2 2 0 0 0 4.1 20.6h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4.5M12 17h.01"/></g></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><ellipse cx="12" cy="12" rx="3.6" ry="4.6"/></g></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></g></symbol>
+  <symbol id="i-step" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></g></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></g></symbol>
+  <symbol id="i-net" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M6.7 7.1l3.6 3.8M6.7 16.9l3.6-3.8M13.7 10.9l3.6-3.8M13.7 13.1l3.6 3.8"/></g></symbol>
+</svg>
+
+<div class="viewport">
+<main class="stage" id="stage" aria-roledescription="presentación" aria-label="FaceCut AI, Entrega 2">
+
+  <header class="chrome-head" aria-hidden="true">
+    <div class="brand"><span class="dot"></span>FaceCut <b>AI</b></div>
+    <div class="where"><span class="sec" id="secName"></span><span class="budget" id="secBudget"></span></div>
+  </header>
+
+  <!-- 1 · PORTADA -->
+  <section class="slide dark cover" data-sec="1" aria-label="Portada">
+    <div class="cover-top">
+      <div class="course" data-r style="--i:0"><span class="mark"><svg><use href="#i-net"/></svg></span>Inteligencia Artificial 2</div>
+      <img class="uis" src="assets/img/logo-uis.webp" alt="Universidad Industrial de Santander" data-r style="--i:1">
+    </div>
+    <h1 data-r style="--i:1">FaceCut<br><b>AI</b></h1>
+    <p class="sub" data-r style="--i:2">Clasificación de la forma del rostro masculino: <strong>tres métodos de transfer learning</strong> evaluados y comparados.</p>
+    <div class="cover-art"><img src="assets/img/portada.webp" alt="Rostro masculino con puntos faciales detectados, flanqueado por cuatro morfologías de rostro y cuatro cortes de cabello recomendados"></div>
+    <div class="team" data-r style="--i:3">
+      <div>
+        <div class="lbl">Integrantes</div>
+        <div class="names">Héctor Julián Franco<i>·</i>César David Ascencio<i>·</i>Carlos Andrés Gutiérrez</div>
+      </div>
+      <div class="ent"><b>Entrega 2</b>MTCNN + FaceNet · VGG16 · InceptionV3</div>
+    </div>
+  </section>
+
+  <!-- 2 · INTRODUCCIÓN -->
+  <section class="slide" data-sec="2" aria-label="Introducción">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">La indecisión en las barberías</h2>
+    </div>
+    <div class="intro-grid">
+      <article class="panel ps problem" data-r style="--i:1">
+        <h3 class="ttl"><svg aria-hidden="true"><use href="#i-alert"/></svg>El problema</h3>
+        <p class="body">El cliente desconoce la estructura morfológica de su rostro y no sabe qué corte le favorece.</p>
+        <p class="out"><b>Impacto:</b> la carga de decidir pasa al barbero, la atención se retrasa y el usuario queda insatisfecho.</p>
+      </article>
+      <article class="panel ps solution" data-r style="--i:2">
+        <h3 class="ttl"><svg aria-hidden="true"><use href="#i-scan"/></svg>Solución: FaceCut AI</h3>
+        <p class="body">Clasificación objetiva del rostro en cuatro morfologías masculinas mediante deep learning.</p>
+        <p class="out"><b>Salida:</b> recomendación automática de uno a dos cortes ideales con un motor de reglas.</p>
+      </article>
+      <div class="intro-photo panel" data-wipe style="--i:2"><img src="assets/img/intro-cliente.webp" alt="Hombre revisando su peinado frente al espejo"></div>
+    </div>
+    <div class="panel shapes" data-r style="--i:3">
+      <span class="lbl">Morfologías objetivo</span>
+      <span class="shape"><svg viewBox="0 0 40 48"><ellipse cx="20" cy="24" rx="14" ry="20" fill="none" stroke="currentColor" stroke-width="3"/></svg>Ovalado</span>
+      <span class="shape"><svg viewBox="0 0 40 48"><rect x="4" y="7" width="32" height="34" rx="6" fill="none" stroke="currentColor" stroke-width="3"/></svg>Cuadrado</span>
+      <span class="shape"><svg viewBox="0 0 40 48"><circle cx="20" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="3"/></svg>Redondo</span>
+      <span class="shape"><svg viewBox="0 0 40 48"><rect x="7" y="3" width="26" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="3"/></svg>Rectangular</span>
+    </div>
+  </section>
+
+  <!-- 3 · OBJETIVO Y ALCANCE -->
+  <section class="slide" data-sec="3" aria-label="Objetivo y alcance">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Objetivo general y alcance del proyecto</h2>
+    </div>
+    <div class="obj-grid">
+      <article class="panel obj" data-r style="--i:1">
+        <div class="k">Objetivo</div>
+        <p>Construir una herramienta que <b>clasifique cuatro tipos de rostro masculino</b> y aplique reglas de asociación directa para <b>sugerir los cortes más adecuados</b>.</p>
+        <div class="methods" aria-label="Métodos evaluados">
+          <span>MTCNN + FaceNet</span><span>VGG16</span><span>InceptionV3</span>
+        </div>
+      </article>
+      <article class="panel scope" data-r style="--i:2">
+        <div class="k">Alcance técnico</div>
+        <ol>
+          <li><div><b>Modelado con deep learning</b><span>Transfer learning sobre tres arquitecturas profundas, evaluadas en el mismo problema.</span></div></li>
+          <li><div><b>Motor de reglas</b><span>Lógica asociativa entre la morfología predicha y un catálogo de cortes.</span></div></li>
+          <li><div><b>Despliegue y demo</b><span>Pipeline de inferencia funcional en Google Colab.</span></div></li>
+        </ol>
+      </article>
+    </div>
+    <p class="key" data-r style="--i:3"><b>Aporte clave:</b> enfoque 100 % masculino, con aplicación comercial real en barberías.</p>
+  </section>
+
+  <!-- 4a · MÉTODO · MTCNN + FaceNet -->
+  <section class="slide" data-sec="4" aria-label="Método 1: MTCNN + FaceNet">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">MTCNN + FaceNet (Ji)</h2>
+      <span class="of" data-r style="--i:0">Método 1 de 3</span>
+    </div>
+    <div class="method">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar pipeline de MTCNN + FaceNet"><img src="assets/img/ji-pipeline.webp" alt="Pipeline del proyecto con MTCNN + FaceNet en ocho etapas: configuración del entorno, preparación del dataset, preparación de datos, modelo, entrenamiento, experimentos de ablación, evaluación final e inferencia con recomendación"></button>
+        <figcaption><span class="tag">Pipeline original</span>Clic para ampliar</figcaption>
+      </figure>
+      <div class="side">
+        <ul class="facts">
+          <li data-r style="--i:2"><span class="k">1</span><div><b>Detección con MTCNN</b><span>Recorte del rostro a color, 160 × 160 px.</span></div></li>
+          <li data-r style="--i:3"><span class="k">2</span><div><b>FaceNet como backbone</b><span>InceptionResnetV1 preentrenado en VGGFace2; embedding de 512.</span></div></li>
+          <li data-r style="--i:4"><span class="k">3</span><div><b>Cabeza de 4 clases</b><span>CrossEntropy + Center Loss, con ablación de E0 a E5.</span></div></li>
+        </ul>
+        <p class="ref" data-r style="--i:5"><strong>Referencia:</strong> el artículo de Ji reporta 92.32 % de accuracy, por encima de DenseNet y VGG16.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4b · MÉTODO · VGG16 -->
+  <section class="slide" data-sec="4" aria-label="Método 2: VGG16">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">VGG16</h2>
+      <span class="of" data-r style="--i:0">Método 2 de 3</span>
+    </div>
+    <div class="method">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar pipeline de VGG16"><img src="assets/img/vgg-pipeline.webp" alt="Pipeline VGG16 en tres pasos: preprocesamiento con dlib, modelo base VGG16 congelado y clasificador personalizado"></button>
+        <figcaption><span class="tag">Pipeline original</span>Transfer learning basado en ImageNet</figcaption>
+      </figure>
+      <div class="side">
+        <ul class="facts">
+          <li data-r style="--i:2"><span class="k">1</span><div><b>Preprocesamiento</b><span>Rostro con dlib, márgenes +15 % ancho y +50 % alto, 224 × 224 px.</span></div></li>
+          <li data-r style="--i:3"><span class="k">2</span><div><b>Base congelada</b><span>VGG16 de ImageNet: 14.7 millones de pesos intactos.</span></div></li>
+          <li data-r style="--i:4"><span class="k">3</span><div><b>Clasificador propio</b><span>Flatten, Dense 32 ReLU, Dropout 0.5 y Dense 4 Softmax.</span></div></li>
+        </ul>
+        <p class="ref" data-r style="--i:5"><strong>Sin aumento de datos:</strong> decisión basada en el artículo VISCial, para no deformar los contornos faciales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4c · MÉTODO · InceptionV3 -->
+  <section class="slide" data-sec="4" aria-label="Método 3: InceptionV3">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">InceptionV3</h2>
+      <span class="of" data-r style="--i:0">Método 3 de 3</span>
+    </div>
+    <div class="method">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar pipeline de InceptionV3"><img src="assets/img/inc-pipeline.webp" alt="Pipeline InceptionV3: entrada del dataset, detección y recorte, partición, aumento de datos, fase A con modelo base congelado, fase B con fine-tuning, evaluación en test y clasificación de forma del rostro"></button>
+        <figcaption><span class="tag">Pipeline original</span>Clic para ampliar</figcaption>
+      </figure>
+      <div class="side">
+        <ul class="facts">
+          <li data-r style="--i:2"><span class="k">1</span><div><b>Detección con dlib</b><span>HOG + SVM, recorte ampliado a 299 × 299 px y relleno gris.</span></div></li>
+          <li data-r style="--i:3"><span class="k">A</span><div><b>Fase A: base congelada</b><span>Solo 8,196 parámetros entrenables sobre 21.8 millones.</span></div></li>
+          <li data-r style="--i:4"><span class="k">B</span><div><b>Fase B: fine-tuning</b><span>Capas liberadas desde la 249: 11.1 millones de parámetros.</span></div></li>
+        </ul>
+        <p class="ref" data-r style="--i:5"><strong>Aumento restrictivo:</strong> flip, rotación de 4° y zoom de 10 %, para no alterar la geometría del rostro.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5a · CONFIGURACIÓN · Dataset -->
+  <section class="slide" data-sec="5" aria-label="Configuración experimental: dataset">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Un mismo dataset, dos particiones</h2>
+      <p class="lead" data-r style="--i:1"><strong>1,281 imágenes balanceadas</strong> de datasets públicos y recolección propia en Pinterest, homogeneizadas para los tres métodos.</p>
+    </div>
+    <div class="cfg-a">
+      <figure data-wipe style="--i:2">
+        <button class="zoom" type="button" aria-label="Ampliar arquitectura del dataset"><img src="assets/img/dataset.webp" alt="Arquitectura del dataset: 1,281 imágenes, Redondo 322, Rectangular 317, Ovalado 319, Cuadrado 323; estrategia de aumento de datos restrictiva"></button>
+        <figcaption><span class="tag">Figura original</span>Arquitectura del dataset y aumento de datos</figcaption>
+      </figure>
+      <div class="panel split" data-r style="--i:3">
+        <h3>Partición por método</h3>
+        <table class="t">
+          <thead><tr><th>Método</th><th>Partición</th><th class="r">Test</th></tr></thead>
+          <tbody>
+            <tr><th>MTCNN + FaceNet</th><td>70 / 15 / 15 %</td><td class="r">192</td></tr>
+            <tr><th>VGG16</th><td>1,022 train/val (80/20)</td><td class="r">327</td></tr>
+            <tr><th>InceptionV3</th><td>1,022 train/val (80/20)</td><td class="r">327</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:20px">Las 327 imágenes de test quedaron aisladas del entrenamiento. FaceNet usó su propia partición estratificada de 48 imágenes por clase.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5b · CONFIGURACIÓN · Hiperparámetros -->
+  <section class="slide" data-sec="5" aria-label="Configuración experimental: hiperparámetros">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Configuración de cada método</h2>
+    </div>
+    <div class="cfg-b">
+      <div class="panel hyper" data-r style="--i:1">
+        <table class="t">
+          <thead><tr><th></th><th><span>MTCNN + FaceNet</span></th><th><span>VGG16</span></th><th><span>InceptionV3</span></th></tr></thead>
+          <tbody>
+            <tr><th>Entrada</th><td>Recorte MTCNN, 160 × 160</td><td>Recorte dlib, 224 × 224</td><td>Recorte dlib, 299 × 299</td></tr>
+            <tr><th>Preentrenamiento</th><td>VGGFace2 (rostros)</td><td>ImageNet</td><td>ImageNet</td></tr>
+            <tr><th>Entrenamiento</th><td>Backbone + cabeza</td><td>Solo la cabeza, una fase</td><td>Fase A congelada, fase B fine-tuning</td></tr>
+            <tr><th>Optimizador</th><td>AdamW: 2e-5 backbone, 1e-3 cabeza</td><td>Adam, 1e-4</td><td>Adam: 1e-3 (A), 1e-5 (B)</td></tr>
+            <tr><th>Pérdida</th><td>CrossEntropy + Center Loss (λ = 0.01)</td><td class="na">No reportada</td><td>Categorical crossentropy</td></tr>
+            <tr><th>Batch / épocas</th><td>32 / 60 máx.</td><td>32 / 30 máx.</td><td>32 / 25 (A), 30 (B) máx.</td></tr>
+            <tr><th>Regularización</th><td>Dropout 0.5, BatchNorm, weight decay 1e-2, label smoothing 0.1</td><td>Dropout 0.5</td><td>Dropout 30 %</td></tr>
+            <tr><th>Aumento de datos</th><td>Flip, rotación ±10°, zoom, ColorJitter, RandomErasing</td><td>Ninguno</td><td>Flip, rotación 4°, zoom 10 %</td></tr>
+            <tr><th>Callbacks</th><td>ReduceLROnPlateau, Early Stopping (8), ModelCheckpoint</td><td>Early Stopping (5), ModelCheckpoint</td><td>Early Stopping (5 y 6), ModelCheckpoint</td></tr>
+            <tr><th>Métricas</th><td>Accuracy, P, R y F1 por clase, matriz de confusión, brecha train−val</td><td>Accuracy y 7 métricas por clase: CA, CE, SV, SF, FPR, P, F1</td><td>Accuracy, F1 macro, matriz de confusión</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="avatar" data-wipe style="--i:2">
+        <button class="zoom" type="button" aria-label="Ampliar ilustración de detección facial"><img src="assets/img/ji-avatar.webp" alt="Ilustración de un rostro con el recuadro y los puntos de referencia de la detección facial"></button>
+        <figcaption>Detección y landmarks del rostro</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5c · CONFIGURACIÓN · Estrategias -->
+  <section class="slide" data-sec="5" aria-label="Configuración experimental: estrategias de entrenamiento">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Estrategias de entrenamiento</h2>
+    </div>
+    <div class="cfg-c">
+      <div class="col">
+        <h3 data-r style="--i:1">VGG16 <small>fase única, sin aumento</small></h3>
+        <figure data-wipe style="--i:2">
+          <button class="zoom" type="button" aria-label="Ampliar configuración experimental de VGG16"><img src="assets/img/vgg-config.webp" alt="Configuración experimental VGG16: arquitectura del dataset, hiperparámetros de fase única, uso de siete métricas por clase y corrección metodológica de la especificidad"></button>
+        </figure>
+      </div>
+      <div class="col">
+        <h3 data-r style="--i:1">InceptionV3 <small>dos fases, aumento restrictivo</small></h3>
+        <figure data-wipe style="--i:2">
+          <button class="zoom" type="button" aria-label="Ampliar estrategia de entrenamiento de InceptionV3"><img src="assets/img/inc-entrenamiento.webp" alt="Estrategia de entrenamiento de InceptionV3: fase 1 con modelo base congelado y fase 2 de fine-tuning"></button>
+        </figure>
+        <figure class="short" data-wipe style="--i:3">
+          <button class="zoom" type="button" aria-label="Ampliar ejemplos de aumento de datos"><img src="assets/img/inc-aumento.webp" alt="Ocho ejemplos de aumento de datos sobre un mismo rostro: original y siete variaciones con giro, rotación y zoom"></button>
+          <figcaption><span class="tag">Aumento de datos</span>Relleno gris constante para no alterar los contornos al rotar</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6a · RESULTADOS · FaceNet -->
+  <section class="slide" data-sec="6" aria-label="Resultados: MTCNN + FaceNet">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Resultados: MTCNN + FaceNet</h2>
+      <span class="of" data-r style="--i:0">Test, 192 imágenes</span>
+    </div>
+    <div class="res-a">
+      <div class="panel report" data-r style="--i:1">
+        <table class="t">
+          <thead><tr><th>Clase</th><th class="r">Precision</th><th class="r">Recall</th><th class="r">F1-score</th><th class="r">Support</th></tr></thead>
+          <tbody>
+            <tr><th>Redondo</th><td class="r">0.936</td><td class="r">0.917</td><td class="r">0.926</td><td class="r">48</td></tr>
+            <tr><th>Rectangular</th><td class="r">0.863</td><td class="r">0.917</td><td class="r">0.889</td><td class="r">48</td></tr>
+            <tr><th>Ovalado</th><td class="r">0.904</td><td class="r">0.979</td><td class="r">0.940</td><td class="r">48</td></tr>
+            <tr><th>Cuadrado</th><td class="r">0.952</td><td class="r">0.833</td><td class="r">0.889</td><td class="r">48</td></tr>
+            <tr class="gap hi"><th>Accuracy</th><td></td><td></td><td class="r">0.911</td><td class="r">192</td></tr>
+            <tr><th>Macro avg</th><td class="r">0.914</td><td class="r">0.911</td><td class="r">0.911</td><td class="r">192</td></tr>
+            <tr><th>Weighted avg</th><td class="r">0.914</td><td class="r">0.911</td><td class="r">0.911</td><td class="r">192</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="takeaways">
+        <li data-r style="--i:2"><b>Accuracy de 91.1 %:</b> buena generalización y convergencia estable.</li>
+        <li data-r style="--i:3"><b>Destacan Ovalado y Redondo,</b> con F1-score superior a 0.92.</li>
+        <li data-r style="--i:4"><b>Reto: Cuadrado</b> (recall 0.833) se confunde con Rectangular por similitud geométrica.</li>
+        <li data-r style="--i:5"><b>Regularización:</b> las curvas muestran el sobreajuste bajo control.</li>
+      </ul>
+      <figure class="wide" data-wipe style="--i:3">
+        <button class="zoom" type="button" aria-label="Ampliar matriz de confusión y curvas de FaceNet"><img src="assets/img/ji-curvas.webp" alt="Matriz de confusión en test y curvas de accuracy y pérdida por época del modelo MTCNN + FaceNet"></button>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6b · RESULTADOS · VGG16 -->
+  <section class="slide" data-sec="6" aria-label="Resultados: VGG16">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Resultados: VGG16</h2>
+      <span class="of" data-r style="--i:0">Test, 327 imágenes</span>
+    </div>
+    <p class="lead" data-r style="--i:1;margin:-22px 0 32px"><strong>44.6 % de accuracy en test</strong>, siete puntos sobre InceptionV3 base, con una brecha de 0.470 entre entrenamiento y prueba: el modelo memorizó el dataset local.</p>
+    <div class="pair">
+      <figure data-wipe style="--i:2">
+        <button class="zoom" type="button" aria-label="Ampliar evolución del entrenamiento de VGG16"><img src="assets/img/vgg-curvas.webp" alt="Curvas de accuracy y loss de VGG16 y matriz de impacto de modelos base: CNN sin optimizar 42.8 %, CNN optimizada 40.7 %, InceptionV3 base 37.6 %, VGG16 base 44.6 %"></button>
+        <figcaption><span class="tag">Evolución del entrenamiento</span>Comparación con modelos base</figcaption>
+      </figure>
+      <figure data-wipe style="--i:3">
+        <button class="zoom" type="button" aria-label="Ampliar análisis de errores de VGG16"><img src="assets/img/vgg-errores.webp" alt="Matriz de confusión de VGG16 en test y hallazgos: Cuadrado es la clase mejor extraída, Redondo la más débil y se documenta sobreajuste"></button>
+        <figcaption><span class="tag">Análisis de errores por clase</span>Redondo es la clase más débil</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6c · RESULTADOS · InceptionV3 -->
+  <section class="slide" data-sec="6" aria-label="Resultados: InceptionV3">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Resultados: InceptionV3</h2>
+      <span class="of" data-r style="--i:0">Test, 327 imágenes</span>
+    </div>
+    <div class="res-c">
+      <figure class="wide" data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar impacto del fine-tuning"><img src="assets/img/inc-impacto.webp" alt="Impacto del fine-tuning: modelo base 37.6 % de accuracy y F1 0.36; con fine-tuning 55.7 % y F1 0.55; conclusión técnica"></button>
+        <figcaption><span class="tag">Impacto del fine-tuning</span>De 37.6 % a 55.7 % de accuracy, F1 de 0.36 a 0.55</figcaption>
+      </figure>
+      <figure data-wipe style="--i:2">
+        <button class="zoom" type="button" aria-label="Ampliar curvas de entrenamiento de InceptionV3"><img src="assets/img/inc-curvas.webp" alt="Curvas de precisión y error de InceptionV3 en entrenamiento y validación por época"></button>
+        <figcaption><span class="tag">Curvas de entrenamiento</span>Precisión y error por época</figcaption>
+      </figure>
+      <figure data-wipe style="--i:3">
+        <button class="zoom" type="button" aria-label="Ampliar análisis de errores de InceptionV3"><img src="assets/img/inc-errores.webp" alt="Matriz de confusión de InceptionV3 en test y hallazgos: Rectangular es la forma más fácil, Cuadrado la más compleja"></button>
+        <figcaption><span class="tag">Análisis de errores por clase</span>Cuadrado sigue siendo la clase más compleja</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6d · RESULTADOS · Comparación -->
+  <section class="slide" data-sec="6" aria-label="Comparación de resultados">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Comparación de los tres métodos</h2>
+    </div>
+    <div class="cmp">
+      <div class="panel chart" data-r style="--i:1" role="img" aria-label="Accuracy en test: MTCNN + FaceNet 91.1 %, InceptionV3 con fine-tuning 55.7 %, VGG16 44.6 %. F1 macro: 0.911, 0.55 y no reportado.">
+        <h3>Mejor configuración de cada método</h3>
+        <div class="legend"><span><i style="background:var(--slate-bar)"></i>Accuracy en test (%)</span><span><i style="background:var(--slate-bar-2)"></i>F1 macro (× 100)</span></div>
+        <div class="bars">
+          <div class="brow best">
+            <div class="name">MTCNN + FaceNet <small>192 imágenes</small></div>
+            <div class="bar"><div class="v" style="--v:91.1;--d:0">91.1 %</div></div>
+            <div class="bar"><div class="v" style="--v:91.1;--d:1">0.911</div></div>
+          </div>
+          <div class="brow">
+            <div class="name">InceptionV3 + fine-tuning <small>327 imágenes</small></div>
+            <div class="bar"><div class="v" style="--v:55.7;--d:2">55.7 %</div></div>
+            <div class="bar"><div class="v" style="--v:55;--d:3">0.55</div></div>
+          </div>
+          <div class="brow">
+            <div class="name">VGG16 base congelada <small>327 imágenes</small></div>
+            <div class="bar"><div class="v" style="--v:44.6;--d:4">44.6 %</div></div>
+            <div class="bar"><span class="na">F1 macro no reportado</span></div>
+          </div>
+        </div>
+        <div class="axis" aria-hidden="true"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+      </div>
+      <div class="right">
+        <div class="panel cmpt" data-r style="--i:2">
+          <table class="t">
+            <thead><tr><th>Método</th><th class="r">Accuracy</th><th class="r">F1 macro</th><th>Preentreno</th><th>Ajuste fino</th></tr></thead>
+            <tbody>
+              <tr class="hi"><th>MTCNN + FaceNet</th><td class="r">91.1 %</td><td class="r">0.911</td><td>VGGFace2</td><td>Sí</td></tr>
+              <tr><th>InceptionV3</th><td class="r">55.7 %</td><td class="r">0.55</td><td>ImageNet</td><td>Sí, desde capa 249</td></tr>
+              <tr><th>VGG16</th><td class="r">44.6 %</td><td class="r na">No reportado</td><td>ImageNet</td><td>No</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note" data-r style="--i:3">
+          <svg><use href="#i-alert"/></svg>
+          <p><strong>Lectura correcta:</strong> FaceNet se evaluó sobre 192 imágenes y los otros dos sobre las mismas 327. La ventaja de 35.4 puntos es amplia, pero no proviene de un test idéntico; se confirmará en la siguiente etapa.</p>
+        </div>
+        <div class="verdict" data-r style="--i:4">
+          <span class="badge"><svg><use href="#i-award"/></svg></span>
+          <p><b>MTCNN + FaceNet obtuvo el mejor desempeño</b> en accuracy y en F1 macro. El preentrenamiento en rostros marca la diferencia frente a ImageNet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · CONCLUSIONES Y TRABAJO FALTANTE -->
+  <section class="slide" data-sec="7" aria-label="Conclusiones y trabajo faltante">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Conclusiones y trabajo faltante</h2>
+    </div>
+    <div class="concl">
+      <div class="panel pick" data-r style="--i:1">
+        <div>
+          <div class="lbl">Modelo seleccionado para la siguiente etapa</div>
+          <div class="m">MTCNN + <b>FaceNet</b></div>
+        </div>
+        <p class="why">Elegido por su <b>rendimiento experimental:</b> 91.1 % de accuracy y F1 macro de 0.911, a 1.2 puntos del 92.32 % del artículo de Ji.</p>
+      </div>
+      <div class="panel lst" data-r style="--i:2">
+        <h3>Conclusiones</h3>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><span><b>El preentrenamiento facial pesa más que la arquitectura:</b> VGG16 e InceptionV3, entrenadas en ImageNet, no superan el 56 % con unas 1,000 imágenes.</span></li>
+          <li><svg><use href="#i-check"/></svg><span><b>El fine-tuning ayuda, pero no alcanza:</b> InceptionV3 sube de 37.6 % a 55.7 %.</span></li>
+          <li><svg><use href="#i-check"/></svg><span><b>El preprocesamiento es decisivo:</b> la detección y el recorte previos eliminan el ruido del torso y del fondo, y el aumento de datos debe ser restrictivo.</span></li>
+        </ul>
+      </div>
+      <div class="panel lst todo" data-r style="--i:3">
+        <h3>Trabajo faltante: 3.ª entrega</h3>
+        <ul>
+          <li><svg><use href="#i-step"/></svg><span><b>Reevaluar los tres modelos</b> sobre la misma partición de test para confirmar la selección.</span></li>
+          <li><svg><use href="#i-step"/></svg><span><b>Integrar el motor de reglas</b> que recomienda de uno a dos cortes por morfología.</span></li>
+          <li><svg><use href="#i-step"/></svg><span><b>Desplegar la inferencia</b> en tiempo real con Gradio o Streamlit.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · VISTAZO AL NOTEBOOK -->
+  <section class="slide" data-sec="8" aria-label="Vistazo al notebook">
+    <div class="head">
+      <h2 class="title" data-r style="--i:0">Vistazo a los notebooks</h2>
+      <p class="lead" data-r style="--i:1">Cada desarrollo está disponible para ejecutarse. Abre el enlace o escanea el código.</p>
+    </div>
+    <div class="nb">
+      <a class="panel nbc best" data-r style="--i:2" href="https://colab.research.google.com/drive/10xD4vZUbmNu71s9rLm1zdyxq3R_UcTTQ?usp=drive_link" target="_blank" rel="noopener">
+        <span class="chosen">Seleccionado</span>
+        <span class="ord">Método 1</span>
+        <h3>MTCNN + FaceNet</h3>
+        <span class="host">Google Colab</span>
+        <span class="qr"><img src="assets/img/qr-facenet.svg" alt="Código QR del notebook de MTCNN + FaceNet"></span>
+        <span class="url">colab.research.google.com/drive/10xD4vZUbmNu71s9rLm1zdyxq3R_UcTTQ</span>
+        <span class="go">Abrir notebook<svg><use href="#i-out"/></svg></span>
+      </a>
+      <a class="panel nbc" data-r style="--i:3" href="https://colab.research.google.com/drive/1Ag0TpQLSSVMN4O3cOH7zK9PeDfpAgYs7?usp=drive_link" target="_blank" rel="noopener">
+        <span class="ord">Método 2</span>
+        <h3>VGG16</h3>
+        <span class="host">Google Colab</span>
+        <span class="qr"><img src="assets/img/qr-vgg16.svg" alt="Código QR del notebook de VGG16"></span>
+        <span class="url">colab.research.google.com/drive/1Ag0TpQLSSVMN4O3cOH7zK9PeDfpAgYs7</span>
+        <span class="go">Abrir notebook<svg><use href="#i-out"/></svg></span>
+      </a>
+      <a class="panel nbc" data-r style="--i:4" href="https://drive.google.com/file/d/1HIyRgBE8mN2cKhges_o2WarfzaIrBJ2Q/view?usp=drive_link" target="_blank" rel="noopener">
+        <span class="ord">Método 3</span>
+        <h3>InceptionV3</h3>
+        <span class="host">Google Drive</span>
+        <span class="qr"><img src="assets/img/qr-inception.svg" alt="Código QR del notebook de InceptionV3"></span>
+        <span class="url">drive.google.com/file/d/1HIyRgBE8mN2cKhges_o2WarfzaIrBJ2Q</span>
+        <span class="go">Abrir notebook<svg><use href="#i-out"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <footer class="chrome-foot">
+    <nav class="rail" id="rail" aria-label="Secciones"></nav>
+    <div class="count">
+      <button class="nav-btn" id="prev" type="button" aria-label="Diapositiva anterior"><svg><use href="#i-prev"/></svg></button>
+      <span id="count" aria-live="polite"></span>
+      <button class="nav-btn" id="next" type="button" aria-label="Diapositiva siguiente"><svg><use href="#i-next"/></svg></button>
+    </div>
+  </footer>
+</main>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Figura ampliada" hidden>
+  <span class="hint">Esc o clic para cerrar</span>
+</div>
+<div class="timer" id="timer" aria-hidden="true"><span id="tElapsed">00:00</span><span class="b" id="tBudget"></span></div>
+
+<script>
+(() => {
+  // Sections and time budgets from the course rubric (seconds)
+  const SECTIONS = [
+    ['Portada', 15], ['Introducción', 60], ['Objetivo y alcance', 45], ['Método propuesto', 180],
+    ['Configuración experimental', 60], ['Resultados preliminares', 120], ['Conclusiones y trabajo faltante', 60], ['Vistazo al notebook', 60]
+  ];
+  const fmt = s => s >= 60 ? (s % 60 ? `${Math.floor(s/60)} min ${s%60} s` : `${s/60} min`) : `${s} s`;
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const rail = document.getElementById('rail');
+  const secName = document.getElementById('secName');
+  const secBudget = document.getElementById('secBudget');
+  const count = document.getElementById('count');
+  const prev = document.getElementById('prev'), next = document.getElementById('next');
+  let cur = -1;
+
+  // Print header per slide (the live chrome is hidden in print)
+  slides.forEach(s => {
+    const n = +s.dataset.sec;
+    if (n === 1) return;
+    const h = document.createElement('div');
+    h.className = 'print-head';
+    h.innerHTML = `<div class="brand"><span class="dot"></span>FaceCut <b>AI</b></div><span>${n} · ${SECTIONS[n-1][0]}</span>`;
+    s.prepend(h);
+  });
+
+  // Rail: one segment per section, width proportional to its time budget
+  const segs = SECTIONS.map(([name, sec], i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'seg';
+    b.style.setProperty('--w', sec);
+    b.textContent = String(i+1);
+    b.setAttribute('aria-label', `${i+1}. ${name}`);
+    b.title = `${name} · ${fmt(sec)}`;
+    b.addEventListener('click', () => go(slides.findIndex(s => +s.dataset.sec === i+1)));
+    rail.append(b);
+    return b;
+  });
+
+  function fit() {
+    const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+    stage.style.setProperty('--scale', s);
+  }
+
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i === cur) return;
+    cur = i;
+    slides.forEach((s, k) => {
+      const on = k === i;
+      s.classList.toggle('is-active', on);
+      s.inert = !on;
+      s.setAttribute('aria-hidden', String(!on));
+    });
+    const sec = +slides[i].dataset.sec;
+    stage.classList.toggle('is-cover', sec === 1);
+    secName.textContent = `${sec} · ${SECTIONS[sec-1][0]}`;
+    secBudget.textContent = fmt(SECTIONS[sec-1][1]);
+    // Fill each rail segment by how far through that section we are
+    segs.forEach((seg, k) => {
+      const idx = slides.map((s, j) => +s.dataset.sec === k+1 ? j : -1).filter(j => j >= 0);
+      let f = 0;
+      if (i > idx[idx.length-1]) f = 100;
+      else if (i >= idx[0]) f = ((i - idx[0] + 1) / idx.length) * 100;
+      seg.style.setProperty('--fill', f + '%');
+      seg.classList.toggle('on', k === sec-1);
+      seg.setAttribute('aria-current', k === sec-1 ? 'step' : 'false');
+    });
+    count.textContent = `${String(i+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+    history.replaceState(null, '', '#' + (i+1));
+    timer.section(sec);
+  }
+
+  // Lightbox for the original figures
+  const lb = document.getElementById('lightbox'), lbImg = document.createElement('img');
+  lb.prepend(lbImg);
+  let lastFocus = null;
+  stage.addEventListener('click', e => {
+    const z = e.target.closest('.zoom');
+    if (!z) return;
+    const img = z.querySelector('img');
+    lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt;
+    lastFocus = z; lb.hidden = false; lb.classList.add('open'); lb.focus();
+  });
+  const closeLb = () => { lb.classList.remove('open'); lb.hidden = true; lastFocus && lastFocus.focus(); };
+  lb.tabIndex = -1;
+  lb.addEventListener('click', closeLb);
+
+  // Presenter timer: T toggles; shows elapsed time against the section budget
+  const timer = (() => {
+    const el = document.getElementById('timer'), te = document.getElementById('tElapsed'), tb = document.getElementById('tBudget');
+    let start = 0, secStart = 0, curSec = 1, id = 0;
+    const mmss = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+    function tick() {
+      const now = Date.now(), total = (now - start)/1000, inSec = (now - secStart)/1000, budget = SECTIONS[curSec-1][1];
+      te.textContent = mmss(total);
+      tb.textContent = `sección ${mmss(inSec)} / ${mmss(budget)}`;
+      el.classList.toggle('over', inSec > budget);
+    }
+    return {
+      toggle() {
+        if (el.classList.toggle('on')) { start = secStart = Date.now(); tick(); id = setInterval(tick, 500); }
+        else clearInterval(id);
+      },
+      section(s) { if (s !== curSec) { curSec = s; secStart = Date.now(); } if (el.classList.contains('on')) tick(); }
+    };
+  })();
+
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!lb.hidden) { if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); closeLb(); } return; }
+    const k = e.key;
+    if (['ArrowRight','PageDown',' ','ArrowDown'].includes(k)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft','PageUp','ArrowUp','Backspace'].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === 'Home') go(0);
+    else if (k === 'End') go(slides.length - 1);
+    else if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+    else if (k === 't' || k === 'T') timer.toggle();
+    else if (/^[1-8]$/.test(k)) go(slides.findIndex(s => +s.dataset.sec === +k));
+  });
+  prev.addEventListener('click', () => go(cur - 1));
+  next.addEventListener('click', () => go(cur + 1));
+
+  // Swipe on touch screens
+  let tx = null;
+  addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1));
+  });
+
+  addEventListener('resize', fit);
+  addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1), 10); if (n) go(n - 1); });
+  fit();
+  const start = parseInt(location.hash.slice(1), 10);
+  go(start ? start - 1 : 0);
+  requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add('ready')));
+})();
+</script>
+</body>
+</html>
