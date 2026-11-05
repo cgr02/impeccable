@@ -83,7 +83,7 @@ figure{margin:0;display:flex;flex-direction:column;min-height:0}
 .zoom{display:block;padding:0;border:0;background:var(--panel);border-radius:var(--r);overflow:hidden;cursor:zoom-in;box-shadow:0 1px 2px rgb(15 23 42 / .06),0 10px 30px -14px rgb(15 23 42 / .22);transition:box-shadow .3s var(--ease-out),transform .3s var(--ease-out)}
 .zoom:hover{box-shadow:0 1px 2px rgb(15 23 42 / .08),0 18px 40px -16px rgb(15 23 42 / .32)}
 .zoom img{display:block;width:100%;height:auto}
-figcaption{margin-top:12px;font-size:18px;color:var(--muted);display:flex;gap:10px;align-items:center}
+figcaption{margin-top:12px;font-size:18px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 10px;align-items:baseline}
 figcaption .tag{font-weight:650;color:var(--ink-2)}
 
 /* Fact list beside a pipeline */
@@ -183,21 +183,28 @@ th,td{text-align:left;vertical-align:top}
 .cfg-a{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;flex:1;min-height:0;align-items:start}
 .split{padding:36px 36px 30px}
 .split h3{margin-bottom:22px}
-.cfg-b{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:36px;flex:1;min-height:0}
+.cfg-b{display:grid;grid-template-columns:minmax(0,1fr);flex:1;min-height:0;align-content:start}
 .hyper{padding:26px 30px}
-.hyper .t{font-size:19.5px}
+.hyper .t{font-size:20.5px}
 .hyper .t tbody th,.hyper .t tbody td{padding:10px 16px}
 .hyper .t thead th{padding:0 16px 10px}
 .hyper .t thead th:first-child{width:220px}
 .hyper .t thead th span{display:block;font-size:22px;text-transform:none;letter-spacing:-.01em;color:var(--ink);font-weight:720}
-.avatar{display:flex;flex-direction:column;gap:12px}
-.avatar .zoom{width:230px}
-.cfg-c{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;flex:1;min-height:0;align-items:start}
-.col{display:flex;flex-direction:column;gap:18px;min-width:0}
-.col h3{display:flex;align-items:baseline;gap:14px}
-.cfg-c .short .zoom img{width:auto;max-width:100%;max-height:230px;margin:0 auto}
-.cfg-c .short .zoom{width:fit-content}
-.col h3 small{font-size:20px;font-weight:550;color:var(--muted)}
+.strat figure .zoom img{max-height:620px}
+.strat .side figure .zoom img{max-height:none;width:100%}
+.strat .side{gap:28px}
+.strat-fn{display:grid;grid-template-columns:360px minmax(0,1fr);gap:48px;flex:1;min-height:0;align-items:center;padding-bottom:24px}
+.strat-fn > figure .zoom{width:360px}
+.fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.fn{padding:34px 36px}
+.fn h3{font-size:27px;margin-bottom:12px}
+.fn p{font-size:23px;line-height:1.45;color:var(--ink-2);text-wrap:pretty}
+.fn p b{color:var(--ink);font-weight:680}
+.ablation{grid-column:1 / -1;padding:24px 34px;display:flex;align-items:center;gap:32px}
+.ablation .lbl{font-size:21px;font-weight:700;white-space:nowrap}
+.ablation ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 12px}
+.ablation li{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);font-size:19px;color:var(--ink-2)}
+.ablation li b{padding:4px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue-ink);font-size:17px;font-variant-numeric:tabular-nums}
 
 /* ---------- Results ---------- */
 .res-a{display:grid;grid-template-columns:760px minmax(0,1fr);grid-template-rows:auto auto;gap:26px 48px;flex:1;min-height:0;align-content:start}
@@ -530,34 +537,89 @@ th,td{text-align:left;vertical-align:top}
           </tbody>
         </table>
       </div>
-      <figure class="avatar" data-wipe style="--i:2">
-        <button class="zoom" type="button" aria-label="Ampliar ilustración de detección facial"><img src="assets/img/ji-avatar.webp" alt="Ilustración de un rostro con el recuadro y los puntos de referencia de la detección facial"></button>
-        <figcaption>Detección y landmarks del rostro</figcaption>
-      </figure>
     </div>
   </section>
 
-  <!-- 5c · CONFIGURACIÓN · Estrategias -->
-  <section class="slide" data-sec="5" aria-label="Configuración experimental: estrategias de entrenamiento">
-    <div class="head">
-      <h2 class="title" data-r style="--i:0">Estrategias de entrenamiento</h2>
+  <!-- 5c · CONFIGURACIÓN · Estrategia FaceNet -->
+  <section class="slide" data-sec="5" aria-label="Estrategia de entrenamiento: MTCNN + FaceNet">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Entrenamiento: MTCNN + FaceNet</h2>
+      <span class="of" data-r style="--i:0">Método 1 de 3</span>
     </div>
-    <div class="cfg-c">
-      <div class="col">
-        <h3 data-r style="--i:1">VGG16 <small>fase única, sin aumento</small></h3>
-        <figure data-wipe style="--i:2">
-          <button class="zoom" type="button" aria-label="Ampliar configuración experimental de VGG16"><img src="assets/img/vgg-config.webp" alt="Configuración experimental VGG16: arquitectura del dataset, hiperparámetros de fase única, uso de siete métricas por clase y corrección metodológica de la especificidad"></button>
-        </figure>
+    <div class="strat-fn">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar ilustración de detección facial"><img src="assets/img/ji-avatar.webp" alt="Ilustración de un rostro con el recuadro y los puntos de referencia de la detección facial"></button>
+        <figcaption><span class="tag">Entrada</span>Recorte MTCNN a color, 160 × 160</figcaption>
+      </figure>
+      <div class="fn-grid">
+        <article class="panel fn" data-r style="--i:2">
+          <h3>Ajuste fino completo</h3>
+          <p>Backbone y cabeza se entrenan juntos con <b>AdamW</b> y tasas diferenciadas: <b>2e-5</b> en el backbone para no destruir lo aprendido en VGGFace2 y <b>1e-3</b> en la cabeza.</p>
+        </article>
+        <article class="panel fn" data-r style="--i:3">
+          <h3>Pérdida combinada</h3>
+          <p><b>CrossEntropy + Center Loss (λ = 0.01):</b> además de separar las clases, agrupa los embeddings de cada morfología alrededor de su centro.</p>
+        </article>
+        <article class="panel fn" data-r style="--i:4">
+          <h3>Regularización y aumento</h3>
+          <p>Dropout 0.5, BatchNorm, weight decay 1e-2 y label smoothing 0.1. Aumento con flip, rotación ±10°, zoom, ColorJitter y RandomErasing.</p>
+        </article>
+        <article class="panel fn" data-r style="--i:5">
+          <h3>Control del entrenamiento</h3>
+          <p>Batch de 32 y hasta 60 épocas, con ReduceLROnPlateau, Early Stopping de paciencia 8 y ModelCheckpoint.</p>
+        </article>
+        <div class="panel ablation" data-r style="--i:6">
+          <span class="lbl">Experimentos de ablación</span>
+          <ol>
+            <li><b>E0</b>Base</li><li><b>E1</b>Aumentación</li><li><b>E2</b>Aumento + regularización</li><li><b>E3</b>Completo</li><li><b>E4</b>Sin Center Loss</li><li><b>E5</b>Preprocesado</li>
+          </ol>
+        </div>
       </div>
-      <div class="col">
-        <h3 data-r style="--i:1">InceptionV3 <small>dos fases, aumento restrictivo</small></h3>
+    </div>
+  </section>
+
+  <!-- 5d · CONFIGURACIÓN · Estrategia VGG16 -->
+  <section class="slide" data-sec="5" aria-label="Estrategia de entrenamiento: VGG16">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Entrenamiento: VGG16</h2>
+      <span class="of" data-r style="--i:0">Método 2 de 3</span>
+    </div>
+    <div class="method strat">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar configuración experimental de VGG16"><img src="assets/img/vgg-config.webp" alt="Configuración experimental VGG16: arquitectura del dataset, hiperparámetros de fase única, uso de siete métricas por clase y corrección metodológica de la especificidad"></button>
+        <figcaption><span class="tag">Figura original</span>Configuración experimental de VGG16</figcaption>
+      </figure>
+      <div class="side">
+        <ul class="facts">
+          <li data-r style="--i:2"><span class="k">1</span><div><b>Fase única</b><span>Solo se entrena el clasificador; la base VGG16 queda congelada.</span></div></li>
+          <li data-r style="--i:3"><span class="k">2</span><div><b>Adam, 1e-4</b><span>Batch de 32, hasta 30 épocas, Early Stopping sobre val_accuracy con paciencia 5.</span></div></li>
+          <li data-r style="--i:4"><span class="k">3</span><div><b>Siete métricas por clase</b><span>CA, CE, SV, SF, FPR, P y F1, con la especificidad recalculada.</span></div></li>
+        </ul>
+        <p class="ref" data-r style="--i:5"><strong>Sin aumento de datos,</strong> para no deformar artificialmente los contornos faciales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5e · CONFIGURACIÓN · Estrategia InceptionV3 -->
+  <section class="slide" data-sec="5" aria-label="Estrategia de entrenamiento: InceptionV3">
+    <div class="head mhead">
+      <h2 class="title" data-r style="--i:0">Entrenamiento: InceptionV3</h2>
+      <span class="of" data-r style="--i:0">Método 3 de 3</span>
+    </div>
+    <div class="method strat">
+      <figure data-wipe style="--i:1">
+        <button class="zoom" type="button" aria-label="Ampliar estrategia de entrenamiento de InceptionV3"><img src="assets/img/inc-entrenamiento.webp" alt="Estrategia de entrenamiento de InceptionV3: fase 1 con modelo base congelado y fase 2 de fine-tuning"></button>
+        <figcaption><span class="tag">Figura original</span>Transfer learning en dos fases</figcaption>
+      </figure>
+      <div class="side">
         <figure data-wipe style="--i:2">
-          <button class="zoom" type="button" aria-label="Ampliar estrategia de entrenamiento de InceptionV3"><img src="assets/img/inc-entrenamiento.webp" alt="Estrategia de entrenamiento de InceptionV3: fase 1 con modelo base congelado y fase 2 de fine-tuning"></button>
-        </figure>
-        <figure class="short" data-wipe style="--i:3">
           <button class="zoom" type="button" aria-label="Ampliar ejemplos de aumento de datos"><img src="assets/img/inc-aumento.webp" alt="Ocho ejemplos de aumento de datos sobre un mismo rostro: original y siete variaciones con giro, rotación y zoom"></button>
-          <figcaption><span class="tag">Aumento de datos</span>Relleno gris constante para no alterar los contornos al rotar</figcaption>
+          <figcaption><span class="tag">Aumento de datos</span>Relleno gris para no alterar los contornos</figcaption>
         </figure>
+        <ul class="facts">
+          <li data-r style="--i:3"><span class="k">1</span><div><b>Fase 1: base congelada</b><span>Adam 1e-3, Early Stopping de paciencia 5.</span></div></li>
+          <li data-r style="--i:4"><span class="k">2</span><div><b>Fase 2: fine-tuning</b><span>Desde la capa 249, Adam 1e-5, Early Stopping de paciencia 6.</span></div></li>
+        </ul>
       </div>
     </div>
   </section>
