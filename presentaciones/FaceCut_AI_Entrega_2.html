@@ -316,8 +316,10 @@ th,td{text-align:left;vertical-align:top}
 
 /* ---------- Print / PDF: one slide per page ---------- */
 @media print{
-  @page{size:1920px 1080px;margin:0}
+  /* Standard 16:9 slide page (13.333 x 7.5 in, as in PowerPoint and Google Slides); the 1920x1080 canvas is scaled to fit */
+  @page{size:13.333in 7.5in;margin:0}
   body{overflow:visible;background:#fff}
+  .stage{zoom:.66667}
   .viewport{position:static;display:block}
   .stage{transform:none!important;box-shadow:none;width:auto;height:auto;overflow:visible;background:none}
   .slide{position:relative;width:1920px;height:1080px;visibility:visible!important;opacity:1!important;break-after:page;background:var(--ground)}
