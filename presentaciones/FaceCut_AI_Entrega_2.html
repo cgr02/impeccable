@@ -266,6 +266,8 @@ th,td{text-align:left;vertical-align:top}
 .lst li svg{width:26px;height:26px;margin-top:2px;color:var(--blue)}
 .lst li b{color:var(--ink);font-weight:680}
 .lst.todo li svg{color:#C2850C}
+.lst.todo{display:flex;flex-direction:column}
+.scope-note{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);font-size:20px;line-height:1.45;color:var(--muted)}
 
 /* ---------- Notebooks ---------- */
 .nb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;flex:1;min-height:0;align-content:center}
@@ -741,7 +743,7 @@ th,td{text-align:left;vertical-align:top}
         </div>
         <div class="note" data-r style="--i:3">
           <svg><use href="#i-alert"/></svg>
-          <p><strong>Lectura correcta:</strong> FaceNet se evaluó sobre 192 imágenes y los otros dos sobre las mismas 327. La ventaja de 35.4 puntos es amplia, pero no proviene de un test idéntico; se confirmará en la siguiente etapa.</p>
+          <p><strong>Lectura correcta:</strong> FaceNet se evaluó sobre 192 imágenes y los otros dos sobre las mismas 327. La ventaja de 35.4 puntos no proviene de un test idéntico, pero es lo bastante amplia para sostener la selección.</p>
         </div>
         <div class="verdict" data-r style="--i:4">
           <span class="badge"><svg><use href="#i-award"/></svg></span>
@@ -767,18 +769,18 @@ th,td{text-align:left;vertical-align:top}
       <div class="panel lst" data-r style="--i:2">
         <h3>Conclusiones</h3>
         <ul>
-          <li><svg><use href="#i-check"/></svg><span><b>El preentrenamiento facial pesa más que la arquitectura:</b> VGG16 e InceptionV3, entrenadas en ImageNet, no superan el 56 % con unas 1,000 imágenes.</span></li>
-          <li><svg><use href="#i-check"/></svg><span><b>El fine-tuning ayuda, pero no alcanza:</b> InceptionV3 sube de 37.6 % a 55.7 %.</span></li>
-          <li><svg><use href="#i-check"/></svg><span><b>El preprocesamiento es decisivo:</b> la detección y el recorte previos eliminan el ruido del torso y del fondo, y el aumento de datos debe ser restrictivo.</span></li>
+          <li><svg><use href="#i-check"/></svg><span><b>Solo MTCNN + FaceNet supera el 90 %:</b> 91.1 % de accuracy y ninguna clase con F1 por debajo de 0.889, frente a 55.7 % de InceptionV3 y 44.6 % de VGG16.</span></li>
+          <li><svg><use href="#i-check"/></svg><span><b>La diferencia está en el punto de partida:</b> FaceNet llega entrenado con rostros (VGGFace2). Con unas 1,000 imágenes, los modelos de ImageNet no logran especializarse: VGG16 sobreajusta y InceptionV3 no pasa de 55.7 % ni con fine-tuning.</span></li>
+          <li><svg><use href="#i-check"/></svg><span><b>Cuadrado sigue siendo la clase más difícil:</b> aun en FaceNet tiene el recall más bajo (0.833) y se confunde con Rectangular.</span></li>
         </ul>
       </div>
       <div class="panel lst todo" data-r style="--i:3">
         <h3>Trabajo faltante: 3.ª entrega</h3>
         <ul>
-          <li><svg><use href="#i-step"/></svg><span><b>Reevaluar los tres modelos</b> sobre la misma partición de test para confirmar la selección.</span></li>
-          <li><svg><use href="#i-step"/></svg><span><b>Integrar el motor de reglas</b> que recomienda de uno a dos cortes por morfología.</span></li>
-          <li><svg><use href="#i-step"/></svg><span><b>Desplegar la inferencia</b> en tiempo real con Gradio o Streamlit.</span></li>
+          <li><svg><use href="#i-step"/></svg><span><b>Optimizar MTCNN + FaceNet</b> para mejorar sus métricas, con foco en la confusión entre Cuadrado y Rectangular. Referencia: el 92.32 % del artículo de Ji.</span></li>
+          <li><svg><use href="#i-step"/></svg><span><b>Integrar el motor de reglas</b> que, a partir de la morfología predicha, recomienda de uno a dos cortes.</span></li>
         </ul>
+        <p class="scope-note">El trabajo continúa solo con el modelo seleccionado. El despliegue de una aplicación queda fuera del alcance de esta etapa.</p>
       </div>
     </div>
   </section>
