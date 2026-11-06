@@ -8,7 +8,6 @@ Presentación unificada de los tres métodos (MTCNN + FaceNet, VGG16, InceptionV
 | Flecha izquierda, PageUp | Diapositiva anterior |
 | 1 a 8 | Ir al inicio de esa sección |
 | F | Pantalla completa |
-| T | Cronómetro de exposición (tiempo total y de la sección frente a su presupuesto) |
 | Clic en una figura | Ampliarla; Esc para cerrar |
 
 Para exportar a PDF: Imprimir, destino "Guardar como PDF", márgenes "Ninguno" y gráficos de fondo activados. Sale una diapositiva por página en tamaño 16:9 estándar (13.33 × 7.5 in, el mismo de PowerPoint y Google Slides). `../FaceCut_AI_Entrega_2.pdf` ya está exportado así.

@@ -43,7 +43,6 @@ button{font:inherit;color:inherit}
 .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--blue)}
 .where{display:flex;align-items:center;gap:18px}
 .where .sec{font-weight:600;color:var(--ink-2)}
-.where .budget{font-variant-numeric:tabular-nums;padding:6px 14px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
 .is-cover .chrome-head{opacity:0;pointer-events:none}
 
 .chrome-foot{position:absolute;z-index:5;left:96px;right:96px;bottom:36px;display:flex;align-items:flex-end;gap:28px}
@@ -292,11 +291,6 @@ th,td{text-align:left;vertical-align:top}
 .lightbox .hint{position:fixed;bottom:2.4vmin;left:50%;transform:translateX(-50%);color:#C9D3E3;font-size:14px}
 @keyframes lb-in{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1}}
 
-/* ---------- Presenter timer ---------- */
-.timer{position:fixed;z-index:40;top:14px;right:14px;display:none;gap:10px;align-items:center;padding:8px 14px;border-radius:999px;background:var(--navy-2);color:var(--on-navy);font:600 14px/1 "Inter",sans-serif;font-variant-numeric:tabular-nums;border:1px solid var(--navy-3)}
-.timer.on{display:flex}
-.timer .b{color:var(--on-navy-2)}
-.timer.over{background:#7A3E06;border-color:#B45309}
 
 /* ---------- Motion ---------- */
 /* Content is visible by default; motion only runs once the script marks the page ready. */
@@ -327,7 +321,7 @@ th,td{text-align:left;vertical-align:top}
   .slide{position:relative;width:1920px;height:1080px;visibility:visible!important;opacity:1!important;break-after:page;background:var(--ground)}
   .slide.dark{background:var(--navy)}
   .slide [data-r],.slide [data-wipe],.bar .v,.cover-art{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}
-  .chrome-head,.chrome-foot,.timer,.lightbox{display:none!important}
+  .chrome-head,.chrome-foot,.lightbox{display:none!important}
   .slide .print-head{display:flex!important}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
@@ -353,7 +347,7 @@ th,td{text-align:left;vertical-align:top}
 
   <header class="chrome-head" aria-hidden="true">
     <div class="brand"><span class="dot"></span>FaceCut <b>AI</b></div>
-    <div class="where"><span class="sec" id="secName"></span><span class="budget" id="secBudget"></span></div>
+    <div class="where"><span class="sec" id="secName"></span></div>
   </header>
 
   <!-- 1 · PORTADA -->
@@ -834,7 +828,6 @@ th,td{text-align:left;vertical-align:top}
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Figura ampliada" hidden>
   <span class="hint">Esc o clic para cerrar</span>
 </div>
-<div class="timer" id="timer" aria-hidden="true"><span id="tElapsed">00:00</span><span class="b" id="tBudget"></span></div>
 
 <script>
 (() => {
@@ -843,12 +836,10 @@ th,td{text-align:left;vertical-align:top}
     ['Portada', 15], ['Introducción', 60], ['Objetivo y alcance', 45], ['Método propuesto', 180],
     ['Configuración experimental', 60], ['Resultados preliminares', 120], ['Conclusiones y trabajo faltante', 60], ['Vistazo al notebook', 60]
   ];
-  const fmt = s => s >= 60 ? (s % 60 ? `${Math.floor(s/60)} min ${s%60} s` : `${s/60} min`) : `${s} s`;
   const stage = document.getElementById('stage');
   const slides = [...stage.querySelectorAll('.slide')];
   const rail = document.getElementById('rail');
   const secName = document.getElementById('secName');
-  const secBudget = document.getElementById('secBudget');
   const count = document.getElementById('count');
   const prev = document.getElementById('prev'), next = document.getElementById('next');
   let cur = -1;
@@ -870,7 +861,7 @@ th,td{text-align:left;vertical-align:top}
     b.style.setProperty('--w', sec);
     b.textContent = String(i+1);
     b.setAttribute('aria-label', `${i+1}. ${name}`);
-    b.title = `${name} · ${fmt(sec)}`;
+    b.title = name;
     b.addEventListener('click', () => go(slides.findIndex(s => +s.dataset.sec === i+1)));
     rail.append(b);
     return b;
@@ -894,7 +885,6 @@ th,td{text-align:left;vertical-align:top}
     const sec = +slides[i].dataset.sec;
     stage.classList.toggle('is-cover', sec === 1);
     secName.textContent = `${sec} · ${SECTIONS[sec-1][0]}`;
-    secBudget.textContent = fmt(SECTIONS[sec-1][1]);
     // Fill each rail segment by how far through that section we are
     segs.forEach((seg, k) => {
       const idx = slides.map((s, j) => +s.dataset.sec === k+1 ? j : -1).filter(j => j >= 0);
@@ -908,7 +898,6 @@ th,td{text-align:left;vertical-align:top}
     count.textContent = `${String(i+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     prev.disabled = i === 0; next.disabled = i === slides.length - 1;
     history.replaceState(null, '', '#' + (i+1));
-    timer.section(sec);
   }
 
   // Lightbox for the original figures
@@ -926,25 +915,6 @@ th,td{text-align:left;vertical-align:top}
   lb.tabIndex = -1;
   lb.addEventListener('click', closeLb);
 
-  // Presenter timer: T toggles; shows elapsed time against the section budget
-  const timer = (() => {
-    const el = document.getElementById('timer'), te = document.getElementById('tElapsed'), tb = document.getElementById('tBudget');
-    let start = 0, secStart = 0, curSec = 1, id = 0;
-    const mmss = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
-    function tick() {
-      const now = Date.now(), total = (now - start)/1000, inSec = (now - secStart)/1000, budget = SECTIONS[curSec-1][1];
-      te.textContent = mmss(total);
-      tb.textContent = `sección ${mmss(inSec)} / ${mmss(budget)}`;
-      el.classList.toggle('over', inSec > budget);
-    }
-    return {
-      toggle() {
-        if (el.classList.toggle('on')) { start = secStart = Date.now(); tick(); id = setInterval(tick, 500); }
-        else clearInterval(id);
-      },
-      section(s) { if (s !== curSec) { curSec = s; secStart = Date.now(); } if (el.classList.contains('on')) tick(); }
-    };
-  })();
 
   addEventListener('keydown', e => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
@@ -955,7 +925,6 @@ th,td{text-align:left;vertical-align:top}
     else if (k === 'Home') go(0);
     else if (k === 'End') go(slides.length - 1);
     else if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
-    else if (k === 't' || k === 'T') timer.toggle();
     else if (/^[1-8]$/.test(k)) go(slides.findIndex(s => +s.dataset.sec === +k));
   });
   prev.addEventListener('click', () => go(cur - 1));
