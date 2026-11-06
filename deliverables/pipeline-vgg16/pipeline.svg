@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs><style>@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,600&amp;display=block');</style></defs>
+<rect width="1920" height="1080" fill="#FFFFFF"/>
+<rect x="56" y="184.03" width="200" height="3" fill="rgb(31, 92, 158)"/>
+<rect x="286" y="184.03" width="714" height="3" fill="rgb(43, 115, 73)"/>
+<rect x="1030" y="184.03" width="572" height="3" fill="rgb(90, 61, 156)"/>
+<rect x="1632" y="184.03" width="232" height="3" fill="rgb(168, 76, 12)"/>
+<rect x="56.5" y="201.53" width="199" height="649" rx="9.5" fill="rgb(238, 243, 250)" stroke="rgb(182, 203, 230)" stroke-width="1"/>
+<rect x="71.5" y="253.83" width="91.22" height="23" rx="3.5" fill="rgb(255, 255, 255)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="71" y="780.25" width="170" height="1" fill="rgb(31, 92, 158)"/>
+<rect x="286.5" y="201.53" width="225" height="649" rx="9.5" fill="rgb(237, 245, 239)" stroke="rgb(181, 214, 191)" stroke-width="1"/>
+<rect x="301.5" y="253.83" width="91.22" height="23" rx="3.5" fill="rgb(255, 255, 255)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="301" y="744.56" width="196" height="1" fill="rgb(43, 115, 73)"/>
+<rect x="542.5" y="201.53" width="205" height="649" rx="9.5" fill="rgb(237, 245, 239)" stroke="rgb(181, 214, 191)" stroke-width="1"/>
+<rect x="557.5" y="253.83" width="61.27" height="23" rx="3.5" fill="rgb(27, 30, 36)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="625.77" y="253.83" width="91.22" height="23" rx="3.5" fill="rgb(255, 255, 255)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="557" y="756.86" width="176" height="1" fill="rgb(43, 115, 73)"/>
+<rect x="778.5" y="201.53" width="221" height="649" rx="9.5" fill="rgb(237, 245, 239)" stroke="rgb(181, 214, 191)" stroke-width="1"/>
+<rect x="793.5" y="253.83" width="61.27" height="23" rx="3.5" fill="rgb(27, 30, 36)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="793.5" y="399.44" width="191" height="115.56" rx="7.5" fill="rgb(255, 255, 255)" stroke="rgb(181, 214, 191)" stroke-width="1"/>
+<rect x="793.5" y="526" width="191" height="138.95" rx="7.5" fill="rgb(255, 255, 255)" stroke="rgb(181, 214, 191)" stroke-width="1"/>
+<rect x="1030.5" y="201.53" width="359" height="649" rx="9.5" fill="rgb(243, 240, 250)" stroke="rgb(203, 191, 230)" stroke-width="1"/>
+<rect x="1045.5" y="253.83" width="61.27" height="23" rx="3.5" fill="rgb(27, 30, 36)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="1113.77" y="253.83" width="211.2" height="23" rx="3.5" fill="rgb(218, 221, 226)" stroke="rgb(218, 221, 226)" stroke-width="1"/>
+<rect x="1045.5" y="287.83" width="329" height="112.64" rx="7.5" fill="rgb(255, 255, 255)" stroke="rgb(203, 191, 230)" stroke-width="1"/>
+<rect x="1045.5" y="411.47" width="329" height="112.64" rx="7.5" fill="rgb(255, 255, 255)" stroke="rgb(203, 191, 230)" stroke-width="1"/>
+<rect x="1046" y="535.61" width="328" height="168.11" rx="7" fill="rgb(255, 255, 255)" stroke="rgb(90, 61, 156)" stroke-width="2"/>
+<rect x="1420.5" y="201.53" width="181" height="649" rx="9.5" fill="rgb(243, 240, 250)" stroke="rgb(203, 191, 230)" stroke-width="1"/>
+<rect x="1435.5" y="253.83" width="81.42" height="23" rx="3.5" fill="rgb(218, 221, 226)" stroke="rgb(218, 221, 226)" stroke-width="1"/>
+<rect x="1435" y="756.86" width="152" height="1" fill="rgb(90, 61, 156)"/>
+<rect x="1632.5" y="201.53" width="231" height="649" rx="9.5" fill="rgb(252, 242, 233)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1647.5" y="275.81" width="61.27" height="23" rx="3.5" fill="rgb(27, 30, 36)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="1647.5" y="469.91" width="201" height="9" rx="1.5" fill="rgb(255, 255, 255)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1648" y="470.41" width="89.19" height="8" fill="rgb(168, 76, 12)"/>
+<rect x="1698" y="467.41" width="2" height="14" fill="rgb(27, 30, 36)"/>
+<rect x="1647.5" y="513" width="201" height="9" rx="1.5" fill="rgb(255, 255, 255)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1648" y="513.5" width="85.59" height="8" fill="rgb(217, 165, 127)"/>
+<rect x="1698" y="510.5" width="2" height="14" fill="rgb(27, 30, 36)"/>
+<rect x="1647.5" y="556.09" width="201" height="9" rx="1.5" fill="rgb(255, 255, 255)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1648" y="556.59" width="81.39" height="8" fill="rgb(217, 165, 127)"/>
+<rect x="1698" y="553.59" width="2" height="14" fill="rgb(27, 30, 36)"/>
+<rect x="1647.5" y="621.28" width="201" height="9" rx="1.5" fill="rgb(255, 255, 255)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1648" y="621.78" width="75.19" height="8" fill="rgb(217, 165, 127)"/>
+<rect x="1698" y="618.78" width="2" height="14" fill="rgb(27, 30, 36)"/>
+<rect x="1647" y="756.86" width="202" height="1" fill="rgb(168, 76, 12)"/>
+<rect x="56.5" y="915.5" width="61.27" height="23" rx="3.5" fill="rgb(27, 30, 36)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="56.5" y="951.5" width="91.22" height="23" rx="3.5" fill="rgb(255, 255, 255)" stroke="rgb(27, 30, 36)" stroke-width="1"/>
+<rect x="56.5" y="987.5" width="81.42" height="23" rx="3.5" fill="rgb(218, 221, 226)" stroke="rgb(218, 221, 226)" stroke-width="1"/>
+<rect x="720.5" y="900.5" width="559" height="127" rx="9.5" fill="rgb(252, 242, 233)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<rect x="1304.5" y="900.5" width="559" height="127" rx="9.5" fill="rgb(252, 242, 233)" stroke="rgb(235, 199, 168)" stroke-width="1"/>
+<g transform="translate(258 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g transform="translate(514 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g transform="translate(750 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g transform="translate(1002 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g transform="translate(1392 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g transform="translate(1604 516.03)"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"></path><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<text x="56" y="82" font-family="'Source Serif 4', Georgia, serif" font-size="42" font-weight="600" fill="rgb(27, 30, 36)" letter-spacing="-0.42">Pipeline: clasificación de la forma del rostro con VGG-16</text>
+<text x="56" y="120.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="20" font-weight="400" fill="rgb(68, 75, 86)">Réplica del paper VIScial (IEEE IST 2024) · Dataset de rostros masculinos · 4 clases: Redondo, Rectangular, Ovalado, Cuadrado</text>
+<text x="56" y="173.53" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(31, 92, 158)" letter-spacing="0.9">DATOS</text>
+<text x="286" y="173.53" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(43, 115, 73)" letter-spacing="0.9">PREPROCESAMIENTO</text>
+<text x="1030" y="173.53" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(90, 61, 156)" letter-spacing="0.9">MODELOS Y ENTRENAMIENTO</text>
+<text x="1632" y="173.53" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(168, 76, 12)" letter-spacing="0.9">EVALUACIÓN</text>
+<text x="71" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(31, 92, 158)">1</text>
+<text x="90.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Datos</text>
+<text x="79" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">ADAPTADO</text>
+<text x="71" y="304.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Dataset del curso</text>
+<text x="71" y="346.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(31, 92, 158)">1,281</text>
+<text x="71" y="371.31" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">fotos en Train</text>
+<text x="71" y="413.75" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(31, 92, 158)">327</text>
+<text x="71" y="438.34" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">fotos en Test</text>
+<text x="71" y="471.78" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">Solo hombres, fotos</text>
+<text x="71" y="495.17" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">de varias fuentes,</text>
+<text x="71" y="518.56" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">clases casi</text>
+<text x="71" y="541.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">equilibradas.</text>
+<text x="71" y="806.25" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">El paper usa 5 clases y</text>
+<text x="71" y="829.64" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">5,208 fotos.</text>
+<text x="301" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(43, 115, 73)">2</text>
+<text x="320.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Recorte del rostro</text>
+<text x="309" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">ADAPTADO</text>
+<text x="301" y="304.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Detector de rostros dlib</text>
+<text x="301" y="327.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">(el paper usa Haar</text>
+<text x="301" y="351.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Cascade). Se toma el</text>
+<text x="301" y="374.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">rostro más grande.</text>
+<text x="301" y="407.89" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(27, 30, 36)">Márgenes</text>
+<text x="301" y="436.28" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">15% a los lados</text>
+<text x="301" y="464.67" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">50% arriba (frente)</text>
+<text x="301" y="493.06" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">15% abajo (mentón)</text>
+<text x="301" y="526.45" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Relleno gris a 224×224 sin</text>
+<text x="301" y="549.84" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">deformar la cara.</text>
+<text x="301" y="768.56" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">Resultado</text>
+<text x="301" y="805" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(43, 115, 73)">1,278</text>
+<text x="301" y="829.59" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">recortes Train</text>
+<text x="409.16" y="805" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(43, 115, 73)">327</text>
+<text x="409.16" y="829.59" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">de Test</text>
+<text x="557" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(43, 115, 73)">3</text>
+<text x="576.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">División</text>
+<text x="565" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(255, 255, 255)" letter-spacing="0.6">PAPER</text>
+<text x="633.27" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">ADAPTADO</text>
+<text x="557" y="304.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">80/20 estratificado</text>
+<text x="557" y="327.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">sobre Train, semilla 42.</text>
+<text x="557" y="370.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(43, 115, 73)">1,022</text>
+<text x="557" y="394.7" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">entrenamiento</text>
+<text x="557" y="437.14" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(43, 115, 73)">256</text>
+<text x="557" y="461.73" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">validación</text>
+<text x="557" y="495.17" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">El Test de 327 queda</text>
+<text x="557" y="518.56" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">aparte y solo se usa al</text>
+<text x="557" y="541.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">final.</text>
+<text x="557" y="782.86" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Misma división que el</text>
+<text x="557" y="806.25" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">modelo Inception del</text>
+<text x="557" y="829.64" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">equipo.</text>
+<text x="793" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(43, 115, 73)">4</text>
+<text x="812.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Preprocesamiento</text>
+<text x="801" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(255, 255, 255)" letter-spacing="0.6">PAPER</text>
+<text x="793" y="304.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Sin aumento de datos: el</text>
+<text x="793" y="327.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">paper concluyó que rinde</text>
+<text x="793" y="351.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">mejor sin aumento.</text>
+<text x="793" y="382.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">Dos ramas</text>
+<text x="804" y="425.94" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(43, 115, 73)">CNN</text>
+<text x="804" y="452.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Imágenes de 254×254,</text>
+<text x="804" y="475.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">píxeles escalados de 0</text>
+<text x="804" y="499.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">a 1.</text>
+<text x="804" y="552.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(43, 115, 73)">VGG-16</text>
+<text x="804" y="578.89" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Imágenes de 224×224,</text>
+<text x="804" y="602.28" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">conversión</text>
+<text x="804" y="625.67" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">RGB → BGR</text>
+<text x="896.67" y="625.67" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">y resta de</text>
+<text x="804" y="649.06" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">la media de ImageNet.</text>
+<text x="1045" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(90, 61, 156)">5</text>
+<text x="1064.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Modelos (Tabla VI del paper)</text>
+<text x="1053" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(255, 255, 255)" letter-spacing="0.6">PAPER</text>
+<text x="1121.27" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">NUESTRA</text>
+<text x="1191.3" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="600" fill="rgb(27, 30, 36)" letter-spacing="0.3">· cabeza de VGG-16</text>
+<text x="1058" y="315.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(90, 61, 156)">CNN sin optimizar</text>
+<text x="1058" y="339.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Conv 16-64-64-64 (3×3, ReLU) +</text>
+<text x="1058" y="361.47" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">MaxPooling 2×2 · Flatten · Dense 32 ·</text>
+<text x="1058" y="383.22" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Dropout 0.5 · Dense 4 softmax · Adam</text>
+<text x="1058" y="438.97" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(90, 61, 156)">CNN optimizada</text>
+<text x="1058" y="463.36" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Conv 64-64-256-64 (filtros ganadores del</text>
+<text x="1058" y="485.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">GridSearch del paper) · misma cabeza ·</text>
+<text x="1058" y="506.86" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Adamax · carga con flow_from_directory</text>
+<text x="1058" y="562.61" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="700" fill="rgb(90, 61, 156)">VGG-16 congelada</text>
+<text x="1221.92" y="562.61" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(90, 61, 156)" letter-spacing="0.6">MODELO PRINCIPAL</text>
+<text x="1058" y="587" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Pesos de ImageNet: 14.7 millones de</text>
+<text x="1058" y="608.75" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">parámetros congelados</text>
+<text x="1058" y="630.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Flatten · Dense 32 · Dropout 0.5 · Dense 4</text>
+<text x="1058" y="652.25" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">softmax · Adam con tasa 0.0001</text>
+<text x="1058" y="685" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="24" font-weight="700" fill="rgb(90, 61, 156)">802,980</text>
+<text x="1144.63" y="685" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">parámetros entrenables</text>
+<text x="1435" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(90, 61, 156)">6</text>
+<text x="1454.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Entrenamiento</text>
+<text x="1443" y="270.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">NUESTRA</text>
+<text x="1435" y="304.33" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">Igual para los tres</text>
+<text x="1435" y="327.72" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(68, 75, 86)">modelos</text>
+<text x="1435" y="370.11" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(90, 61, 156)">32</text>
+<text x="1435" y="394.7" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">imágenes por lote</text>
+<text x="1435" y="437.14" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="32" font-weight="700" fill="rgb(90, 61, 156)">30</text>
+<text x="1435" y="461.73" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">épocas como máximo</text>
+<text x="1435" y="495.17" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Parada temprana</text>
+<text x="1435" y="518.56" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">con paciencia de 5</text>
+<text x="1435" y="541.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">sobre la exactitud</text>
+<text x="1435" y="565.34" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">de validación,</text>
+<text x="1435" y="588.73" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">recuperando la</text>
+<text x="1435" y="612.13" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">mejor versión.</text>
+<text x="1435" y="782.86" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Se registran</text>
+<text x="1435" y="806.25" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">pérdida, exactitud y</text>
+<text x="1435" y="829.64" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">MSE.</text>
+<text x="1647" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(168, 76, 12)">7</text>
+<text x="1666.09" y="236.03" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Evaluación en Test</text>
+<text x="1666.09" y="260.17" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">(327 fotos)</text>
+<text x="1655" y="292.31" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(255, 255, 255)" letter-spacing="0.6">PAPER</text>
+<text x="1647" y="326.31" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">CA, CE, SV, SF, FPR, P, F1,</text>
+<text x="1647" y="349.7" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">matriz de confusión,</text>
+<text x="1647" y="373.09" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">ROC-AUC</text>
+<text x="1719.59" y="373.09" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">y brecha</text>
+<text x="1647" y="396.48" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">entrenamiento-prueba.</text>
+<text x="1647" y="427.88" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="16.5" font-weight="400" fill="rgb(68, 75, 86)">Exactitud en Test</text>
+<text x="1647" y="460.31" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="700" fill="rgb(27, 30, 36)">VGG-16</text>
+<text x="1802.39" y="460.31" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="700" fill="rgb(27, 30, 36)">44.6%</text>
+<text x="1647" y="503.41" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">CNN sin optimizar</text>
+<text x="1803.86" y="503.41" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="600" fill="rgb(27, 30, 36)">42.8%</text>
+<text x="1647" y="546.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">CNN optimizada</text>
+<text x="1803.86" y="546.5" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="600" fill="rgb(27, 30, 36)">40.7%</text>
+<text x="1647" y="589.59" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">Inception V3 base</text>
+<text x="1647" y="611.69" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(27, 30, 36)">(equipo)</text>
+<text x="1803.86" y="589.59" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="600" fill="rgb(27, 30, 36)">37.6%</text>
+<text x="1647" y="782.86" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Margen de error ±5.4</text>
+<text x="1647" y="806.25" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">puntos · azar 25% (línea</text>
+<text x="1647" y="829.64" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">negra)</text>
+<text x="64" y="932" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(255, 255, 255)" letter-spacing="0.6">PAPER</text>
+<text x="126.27" y="931.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(68, 75, 86)">igual que el paper</text>
+<text x="64" y="968" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">ADAPTADO</text>
+<text x="156.22" y="967.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(68, 75, 86)">cambia por una razón concreta</text>
+<text x="64" y="1004" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="15" font-weight="700" fill="rgb(27, 30, 36)" letter-spacing="0.6">NUESTRA</text>
+<text x="146.42" y="1003.95" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="17" font-weight="400" fill="rgb(68, 75, 86)">el paper no lo especifica</text>
+<text x="735" y="933" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(168, 76, 12)">8</text>
+<text x="754.09" y="933" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Comparación</text>
+<text x="735" y="963.3" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Contra la Tabla VI del paper (VGG-16: 96.8%) y contra Inception V3 del</text>
+<text x="735" y="986.69" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">equipo, con el mismo Test y las mismas 4 clases.</text>
+<text x="1319" y="933" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(168, 76, 12)">9</text>
+<text x="1338.09" y="933" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="21" font-weight="700" fill="rgb(27, 30, 36)">Demostración</text>
+<text x="1319" y="963.3" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">Una foto real por clase, recortada igual que en el entrenamiento</text>
+<text x="1319" y="986.69" font-family="'Source Sans 3', 'Source Sans Pro', Arial, sans-serif" font-size="18" font-weight="400" fill="rgb(27, 30, 36)">(equivale a la Fig. 12 del paper). Es un ejemplo, no una medición.</text>
+</svg>

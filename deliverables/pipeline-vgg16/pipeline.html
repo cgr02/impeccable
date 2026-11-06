@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pipeline VGG-16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=block" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B1E24;
+    --ink-2: #444B56;
+    --line: #8A919C;
+    --paper: #FFFFFF;
+
+    --blue: #1F5C9E;   --blue-bg: #EEF3FA;   --blue-bd: #B6CBE6;
+    --green: #2B7349;  --green-bg: #EDF5EF;  --green-bd: #B5D6BF;
+    --violet: #5A3D9C; --violet-bg: #F3F0FA; --violet-bd: #CBBFE6;
+    --orange: #A84C0C; --orange-bg: #FCF2E9; --orange-bd: #EBC7A8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; background: var(--paper); }
+  body {
+    font-family: "Source Sans 3", "Source Sans Pro", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums lining-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--violet-bd); }
+
+  .slide { position: relative; width: 1920px; height: 1080px; padding: 44px 56px 0; overflow: hidden; }
+
+  header h1 {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-weight: 600; font-size: 42px; line-height: 1.12; letter-spacing: -0.01em;
+  }
+  header p { margin-top: 10px; font-size: 20px; color: var(--ink-2); }
+
+  /* Grupo de colores sobre las tarjetas */
+  .groups, .stages { display: grid; grid-template-columns: var(--cols); column-gap: 0; }
+  .slide { --cols: 200px 30px 226px 30px 206px 30px 222px 30px 360px 30px 182px 30px 232px; }
+  .groups { margin-top: 30px; height: 30px; }
+  .group {
+    font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    border-bottom: 3px solid currentColor; padding-bottom: 5px; align-self: end;
+  }
+  .g-blue { color: var(--blue); grid-column: 1 / 2; }
+  .g-green { color: var(--green); grid-column: 3 / 8; }
+  .g-violet { color: var(--violet); grid-column: 9 / 12; }
+  .g-orange { color: var(--orange); grid-column: 13 / 14; }
+
+  .stages { margin-top: 14px; height: 650px; }
+  .card {
+    border: 1px solid; border-radius: 10px; padding: 14px 14px 14px;
+    display: flex; flex-direction: column; gap: 10px; overflow: hidden;
+  }
+  .c-blue { background: var(--blue-bg); border-color: var(--blue-bd); --hue: var(--blue); }
+  .c-green { background: var(--green-bg); border-color: var(--green-bd); --hue: var(--green); }
+  .c-violet { background: var(--violet-bg); border-color: var(--violet-bd); --hue: var(--violet); }
+  .c-orange { background: var(--orange-bg); border-color: var(--orange-bd); --hue: var(--orange); }
+
+  .head { display: flex; align-items: baseline; gap: 8px; }
+  .num { font-size: 21px; font-weight: 700; color: var(--hue); }
+  .card h2 { font-size: 21px; font-weight: 700; line-height: 1.15; color: var(--ink); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    display: inline-block; font-size: 15px; font-weight: 700; letter-spacing: 0.04em;
+    line-height: 1; padding: 4px 7px 3px; border-radius: 4px; border: 1.5px solid var(--ink);
+    white-space: nowrap;
+  }
+  .tag.paper { background: var(--ink); color: #FFFFFF; }
+  .tag.adapt { background: #FFFFFF; color: var(--ink); }
+  .tag.ours { background: #DADDE2; color: var(--ink); border-color: #DADDE2; }
+  .tag small { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+
+  .card p { font-size: 18px; color: var(--ink); }
+  .card p.sub { color: var(--ink-2); }
+  .note { font-size: 16.5px; color: var(--ink-2); margin-top: auto; padding-top: 8px; border-top: 1px solid var(--hue); }
+
+  .fig { display: flex; flex-direction: column; gap: 2px; }
+  .fig .v { font-size: 32px; font-weight: 700; line-height: 1.05; color: var(--hue); }
+  .fig .k { font-size: 16.5px; color: var(--ink-2); }
+  .figs { display: flex; gap: 14px; }
+
+  .list { display: flex; flex-direction: column; gap: 5px; }
+  .list p { font-size: 18px; }
+  .list b { font-weight: 700; }
+
+  .branch { background: #FFFFFF; border: 1px solid var(--green-bd); border-radius: 8px; padding: 9px 10px; }
+  .branch h3, .model h3 { font-size: 18px; font-weight: 700; color: var(--hue); margin-bottom: 3px; }
+
+  .model { background: #FFFFFF; border: 1px solid var(--violet-bd); border-radius: 8px; padding: 10px 12px; }
+  .model p { font-size: 17px; line-height: 1.28; }
+  .model.main { border: 2px solid var(--violet); padding: 9px 11px; }
+  .model .mh { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .model .flag { font-size: 15px; font-weight: 700; color: var(--violet); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .rank { display: flex; flex-direction: column; gap: 8px; }
+  .row .nm { display: flex; justify-content: space-between; gap: 6px; font-size: 17px; }
+  .row .nm span:last-child { font-weight: 600; }
+  .row.top .nm { font-weight: 700; }
+  .row.top .nm span:last-child { font-weight: 700; }
+  .track { position: relative; height: 10px; margin-top: 3px; background: #FFFFFF; border: 1px solid var(--orange-bd); border-radius: 2px; }
+  .bar { position: absolute; left: 0; top: 0; bottom: 0; background: #D9A57F; }
+  .row.top .bar { background: var(--orange); }
+  .chance { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
+
+  .arrow { display: flex; align-items: center; justify-content: center; }
+
+  /* Franja inferior */
+  .bottom { position: absolute; left: 56px; right: 56px; top: 900px; height: 128px; display: flex; gap: 24px; align-items: stretch; }
+  .legend { flex: 1; align-self: center; font-size: 17px; color: var(--ink-2); display: flex; flex-direction: column; gap: 9px; padding-bottom: 2px; }
+  .legend .li { display: flex; align-items: center; gap: 8px; }
+  .legend .lt { font-weight: 700; color: var(--ink); margin-right: 4px; }
+  .legend-row { display: flex; flex-direction: column; gap: 12px; }
+  .box { width: 560px; border: 1px solid var(--orange-bd); background: var(--orange-bg); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; overflow: hidden; --hue: var(--orange); }
+  .box p { font-size: 18px; }
+  .connector { position: absolute; left: 0; top: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+  <header>
+    <h1>Pipeline: clasificación de la forma del rostro con VGG-16</h1>
+    <p>Réplica del paper VIScial (IEEE IST 2024) · Dataset de rostros masculinos · 4 clases: Redondo, Rectangular, Ovalado, Cuadrado</p>
+  </header>
+
+  <div class="groups">
+    <div class="group g-blue">Datos</div>
+    <div class="group g-green">Preprocesamiento</div>
+    <div class="group g-violet">Modelos y entrenamiento</div>
+    <div class="group g-orange">Evaluación</div>
+  </div>
+
+  <div class="stages">
+    <!-- 1 -->
+    <section class="card c-blue">
+      <div class="head"><span class="num">1</span><h2>Datos</h2></div>
+      <div class="tags"><span class="tag adapt">ADAPTADO</span></div>
+      <p>Dataset del curso</p>
+      <div class="fig"><span class="v">1,281</span><span class="k">fotos en Train</span></div>
+      <div class="fig"><span class="v">327</span><span class="k">fotos en Test</span></div>
+      <p class="sub">Solo hombres, fotos de varias fuentes, clases casi equilibradas.</p>
+      <p class="note">El paper usa 5 clases y 5,208 fotos.</p>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 2 -->
+    <section class="card c-green">
+      <div class="head"><span class="num">2</span><h2>Recorte del rostro</h2></div>
+      <div class="tags"><span class="tag adapt">ADAPTADO</span></div>
+      <p>Detector de rostros dlib (el paper usa Haar Cascade). Se toma el rostro más grande.</p>
+      <div class="list">
+        <p><b>Márgenes</b></p>
+        <p>15% a los lados</p>
+        <p>50% arriba (frente)</p>
+        <p>15% abajo (mentón)</p>
+      </div>
+      <p>Relleno gris a 224×224 sin deformar la cara.</p>
+      <div class="note">
+        <p class="sub" style="font-size:16.5px;margin-bottom:4px">Resultado</p>
+        <div class="figs">
+          <div class="fig"><span class="v">1,278</span><span class="k">recortes Train</span></div>
+          <div class="fig"><span class="v">327</span><span class="k">de Test</span></div>
+        </div>
+      </div>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 3 -->
+    <section class="card c-green">
+      <div class="head"><span class="num">3</span><h2>División</h2></div>
+      <div class="tags"><span class="tag paper">PAPER</span><span class="tag adapt">ADAPTADO</span></div>
+      <p>80/20 estratificado sobre Train, semilla 42.</p>
+      <div class="fig"><span class="v">1,022</span><span class="k">entrenamiento</span></div>
+      <div class="fig"><span class="v">256</span><span class="k">validación</span></div>
+      <p>El Test de 327 queda aparte y solo se usa al final.</p>
+      <p class="note">Misma división que el modelo Inception del equipo.</p>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 4 -->
+    <section class="card c-green">
+      <div class="head"><span class="num">4</span><h2>Preprocesamiento</h2></div>
+      <div class="tags"><span class="tag paper">PAPER</span></div>
+      <p>Sin aumento de datos: el paper concluyó que rinde mejor sin aumento.</p>
+      <p class="sub" style="font-size:16.5px">Dos ramas</p>
+      <div class="branch">
+        <h3>CNN</h3>
+        <p>Imágenes de 254×254, píxeles escalados de 0 a 1.</p>
+      </div>
+      <div class="branch">
+        <h3>VGG-16</h3>
+        <p>Imágenes de 224×224, conversión <span style="white-space:nowrap">RGB → BGR</span> y resta de la media de ImageNet.</p>
+      </div>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 5 -->
+    <section class="card c-violet">
+      <div class="head"><span class="num">5</span><h2>Modelos (Tabla VI del paper)</h2></div>
+      <div class="tags"><span class="tag paper">PAPER</span><span class="tag ours">NUESTRA <small>· cabeza de VGG-16</small></span></div>
+      <div class="model">
+        <h3>CNN sin optimizar</h3>
+        <p>Conv 16-64-64-64 (3×3, ReLU) + MaxPooling 2×2 · Flatten · Dense 32 · Dropout 0.5 · Dense 4 softmax · Adam</p>
+      </div>
+      <div class="model">
+        <h3>CNN optimizada</h3>
+        <p>Conv 64-64-256-64 (filtros ganadores del GridSearch del paper) · misma cabeza · Adamax · carga con flow_from_directory</p>
+      </div>
+      <div class="model main">
+        <div class="mh"><h3>VGG-16 congelada</h3><span class="flag">Modelo principal</span></div>
+        <p>Pesos de ImageNet: 14.7 millones de parámetros congelados</p>
+        <p>Flatten · Dense 32 · Dropout 0.5 · Dense 4 softmax · Adam con tasa 0.0001</p>
+        <p style="margin-top:4px"><b style="font-size:24px;color:var(--violet)">802,980</b> parámetros entrenables</p>
+      </div>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 6 -->
+    <section class="card c-violet">
+      <div class="head"><span class="num">6</span><h2>Entrenamiento</h2></div>
+      <div class="tags"><span class="tag ours">NUESTRA</span></div>
+      <p class="sub">Igual para los tres modelos</p>
+      <div class="fig"><span class="v">32</span><span class="k">imágenes por lote</span></div>
+      <div class="fig"><span class="v">30</span><span class="k">épocas como máximo</span></div>
+      <p>Parada temprana con paciencia de 5 sobre la exactitud de validación, recuperando la mejor versión.</p>
+      <p class="note">Se registran pérdida, exactitud y MSE.</p>
+    </section>
+    <div class="arrow"><svg width="26" height="20" viewBox="0 0 26 20"><path d="M1 10H21" stroke="#8A919C" stroke-width="2.5" fill="none"/><path d="M16 4L23 10L16 16" stroke="#8A919C" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+
+    <!-- 7 -->
+    <section class="card c-orange" id="s7">
+      <div class="head"><span class="num">7</span><h2>Evaluación en Test (327 fotos)</h2></div>
+      <div class="tags"><span class="tag paper">PAPER</span></div>
+      <p>CA, CE, SV, SF, FPR, P, F1, matriz de confusión, <span style="white-space:nowrap">ROC-AUC</span> y brecha entrenamiento-prueba.</p>
+      <p class="sub" style="font-size:16.5px">Exactitud en Test</p>
+      <div class="rank">
+        <div class="row top"><div class="nm"><span>VGG-16</span><span>44.6%</span></div><div class="track"><div class="bar" style="width:44.6%"></div><div class="chance" style="left:25%"></div></div></div>
+        <div class="row"><div class="nm"><span>CNN sin optimizar</span><span>42.8%</span></div><div class="track"><div class="bar" style="width:42.8%"></div><div class="chance" style="left:25%"></div></div></div>
+        <div class="row"><div class="nm"><span>CNN optimizada</span><span>40.7%</span></div><div class="track"><div class="bar" style="width:40.7%"></div><div class="chance" style="left:25%"></div></div></div>
+        <div class="row"><div class="nm"><span>Inception V3 base (equipo)</span><span>37.6%</span></div><div class="track"><div class="bar" style="width:37.6%"></div><div class="chance" style="left:25%"></div></div></div>
+      </div>
+      <p class="note">Margen de error ±5.4 puntos · azar 25% (línea negra)</p>
+    </section>
+  </div>
+
+  <div class="bottom">
+    <div class="legend">
+      <div class="legend-row">
+        <span class="li"><span class="tag paper">PAPER</span> igual que el paper</span>
+        <span class="li"><span class="tag adapt">ADAPTADO</span> cambia por una razón concreta</span>
+        <span class="li"><span class="tag ours">NUESTRA</span> el paper no lo especifica</span>
+      </div>
+    </div>
+    <div class="box">
+      <div class="head"><span class="num">8</span><h2 style="font-size:21px;font-weight:700">Comparación</h2></div>
+      <p>Contra la Tabla VI del paper (VGG-16: 96.8%) y contra Inception V3 del equipo, con el mismo Test y las mismas 4 clases.</p>
+    </div>
+    <div class="box">
+      <div class="head"><span class="num">9</span><h2 style="font-size:21px;font-weight:700">Demostración</h2></div>
+      <p>Una foto real por clase, recortada igual que en el entrenamiento (equivale a la Fig. 12 del paper). Es un ejemplo, no una medición.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
